@@ -4,10 +4,5 @@ platform :ios, '8.0'
 
 target 'SCNetworkAgent_Example' do
   pod 'SCNetworkAgent', :path => '../'
-
-  target 'SCNetworkAgent_Tests' do
-    inherit! :search_paths
-
-    
-  end
+  pod 'SCNetworkKit'
 end

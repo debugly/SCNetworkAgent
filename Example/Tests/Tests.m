@@ -2,8 +2,8 @@
 //  SCNetworkAgentTests.m
 //  SCNetworkAgentTests
 //
-//  Created by debugly on 08/30/2019.
-//  Copyright (c) 2019 debugly. All rights reserved.
+//  Created by MRFoundation on 08/30/2019.
+//  Copyright (c) 2019 MRFoundation. All rights reserved.
 //
 
 @import XCTest;

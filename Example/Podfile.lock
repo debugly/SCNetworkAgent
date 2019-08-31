@@ -1,0 +1,23 @@
+PODS:
+  - SCNetworkAgent (0.1.0)
+  - SCNetworkKit (1.0.11)
+
+DEPENDENCIES:
+  - SCNetworkAgent (from `../`)
+  - SCNetworkKit
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - SCNetworkKit
+
+EXTERNAL SOURCES:
+  SCNetworkAgent:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  SCNetworkAgent: 5a0ab0328e5ff27b49d50183a47572dfa98bd1df
+  SCNetworkKit: 8f1ceb5ac0ebc475c967fd4806102c47c4cabb79
+
+PODFILE CHECKSUM: a4994473ccfed9adf5c5e8766e60c6a80a4a39d0
+
+COCOAPODS: 1.5.0
