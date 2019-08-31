@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SCNetworkFormPart.h"
 
 typedef enum : NSUInteger {
     SCNetworkHttpMethod_GET = 1,
@@ -19,16 +20,6 @@ typedef enum : NSUInteger {
     SCNetworkPostEncodingFormData,
 } SCNetworkPostEncoding;
 
-@protocol SCNetworkFormFilePart<NSObject>
-
-@property(nonatomic,copy) NSString *mime;//文本类型
-@property(nonatomic,copy) NSString *fileName;//上传文件名
-@property(nonatomic,copy) NSString *name;//表单的名称，默认为 "file"
-///上传文件的时候，小文件可以使用 data，大文件要使用 fileURL，省得内存暂用过大！
-@property(nonatomic,copy) NSString *fileURL;//文件地址，此时可以不传fileName和mime，内部自动推断
-@property(nonatomic,strong) NSData *data;//二进制数据，必须传fileName和mime，内部不能推断
-
-@end
 
 @protocol SCNetworkBaseApiProtocol;
 typedef void(^SCNetworkApiHandler)(NSObject<SCNetworkBaseApiProtocol> *api,id result,NSError *err);
@@ -71,10 +62,6 @@ typedef void(^SCNetworkApiHandler)(NSObject<SCNetworkBaseApiProtocol> *api,id re
 
 @end
 
-@protocol SCNetworkGetApiProtocol <SCNetworkBaseApiProtocol>
-
-@end
-
 @protocol SCNetworkPostApiProtocol <SCNetworkBaseApiProtocol>
 
 @required;
@@ -99,12 +86,13 @@ typedef void(^SCNetworkApiHandler)(NSObject<SCNetworkBaseApiProtocol> *api,id re
 
 @end
 
+
 @protocol SCNetworkUploadApiProtocol <SCNetworkPostApiProtocol>
 
 @required;
 //必须是: multipart/form-data
 - (SCNetworkPostEncoding)parametersEncoding;
 
-- (NSArray <NSObject<SCNetworkFormFilePart> *>*)formFileParts;
+- (NSArray <SCNetworkFormPart *>*)formParts;
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SCNetworkAgent/SCNetworkAgent.h>
+#import "SCNetworkAgent.h"
 
 @interface SCNetworkApiExecutor : NSObject <SCNetworkApiExecutorProtocol>
 

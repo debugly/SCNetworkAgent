@@ -21,11 +21,6 @@
 @property (nonatomic, assign) SCNetworkHttpMethod method;
 
 /**
- 唯一标识（保留）
- */
-- (NSString *)identifier;
-
-/**
  HTTP 请求参数，URL上带的参数
  */
 @property (nonatomic, strong) NSDictionary* queryParameters;
@@ -45,6 +40,7 @@
  */
 @property (nonatomic, copy) SCNetworkApiHandler handler;
 
+#warning TODO cancel
 /**
  取消掉请求
  */

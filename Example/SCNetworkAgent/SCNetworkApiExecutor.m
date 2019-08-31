@@ -61,15 +61,15 @@
         
         NSAssert([uploadApi parametersEncoding] == SCNetworkPostEncodingFormData, @"Upload must use FormData Encoding!");
         
-        if ([[uploadApi formFileParts] count] > 0) {
+        if ([[uploadApi formParts] count] > 0) {
             NSMutableArray <SCNetworkFormFilePart *>* formFileParts = [NSMutableArray arrayWithCapacity:2];
             
-            for (NSObject<SCNetworkFormFilePart> *part in [uploadApi formFileParts]) {
+            for (SCNetworkFormPart *part in [uploadApi formParts]) {
                 SCNetworkFormFilePart *filePart = [SCNetworkFormFilePart new];
                 filePart.mime = part.mime;
                 filePart.fileName = part.fileName;
                 filePart.name = part.name;
-                filePart.fileURL = part.fileURL;
+                filePart.fileURL = part.filePath;
                 filePart.data = part.data;
                 [formFileParts addObject:filePart];
             }
@@ -118,11 +118,6 @@
                 break;
         }
         req = postReq;
-    } else if ([api conformsToProtocol:@protocol(SCNetworkGetApiProtocol)]) {
-        NSAssert(httpMethod == SCNetworkHttpMethod_GET, @"SCNetworkGetApiProtocol must use Http Get!");
-        //NSObject <SCNetworkGetApiProtocol> *getApi = (id)api;
-#warning TODO download use http post!
-        req = [[SCNetworkRequest alloc] initWithURLString:url params:queryParams];
     } else if ([api conformsToProtocol:@protocol(SCNetworkBaseApiProtocol)]) {
         NSLog(@"BaseApi");
         if (httpMethod == SCNetworkHttpMethod_GET) {
@@ -135,6 +130,8 @@
             postReq.parameterEncoding = SCNKParameterEncodingURL;
             req = postReq;
         }
+    } else {
+        NSAssert(NO, @"can't support the api:%@",api);
     }
     
     [req addHeaders:header];

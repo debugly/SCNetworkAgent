@@ -5,7 +5,7 @@
 //  Created by 许乾隆 on 2019/8/30.
 //
 
-#import <SCNetworkAgent/SCNetworkBaseApi.h>
+#import "SCNetworkBaseApi.h"
 
 @interface SCNetworkDownloadApi : SCNetworkBaseApi<SCNetworkDownloadApiProtocol>
 
