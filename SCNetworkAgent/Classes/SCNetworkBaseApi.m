@@ -7,6 +7,12 @@
 
 #import "SCNetworkBaseApi.h"
 
+@interface SCNetworkBaseApi()
+
+@property (nonatomic, copy) void (^cancelHandler)(NSObject<SCNetworkBaseApiProtocol> *);
+
+@end
+
 @implementation SCNetworkBaseApi
 
 /**
@@ -14,7 +20,14 @@
  */
 - (void)cancel
 {
-    
+    if (self.cancelHandler) {
+        self.cancelHandler(self);
+    }
+}
+
+- (void)registerCancelHandler:(void (^)(NSObject<SCNetworkBaseApiProtocol> *))handler
+{
+    self.cancelHandler = handler;
 }
 
 @end

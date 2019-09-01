@@ -115,6 +115,26 @@
     [[SCNetworkAgent sharedAgent] execApi:postApi];
 }
 
+- (void)testCancelApi{
+    SCNetworkBaseApi *api = [SCNetworkBaseApi new];
+    api.method = SCNetworkHttpMethod_GET;
+    api.urlString = @"http://debugly.cn/repository/test.json";
+    api.queryParameters = @{@"k1":@"v1",@"k2":@"v2"};
+    api.handler = ^(NSObject<SCNetworkBaseApiProtocol> *api, id result, NSError *err){
+        if (!err) {
+            NSLog(@"api suceed:%@",result);
+        } else {
+            NSLog(@"api failed:%@",err);
+        }
+    };
+    
+    [[SCNetworkAgent sharedAgent] execApi:api];
+    //大致预估的时间，可适当调整，达到cancel的目的
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [api cancel];
+    });
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -126,9 +146,8 @@
 //    [self testBaseApiPost];
 //    [self testUploadApi];
 //    [self testDownloadApi];
-    [self testPostApi];
-    
-    
+//    [self testPostApi];
+    [self testCancelApi];
 }
 
 - (void)didReceiveMemoryWarning

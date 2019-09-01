@@ -39,10 +39,6 @@ typedef void(^SCNetworkApiHandler)(NSObject<SCNetworkBaseApiProtocol> *api,id re
  HTTP 请求着陆回调
  */
 - (SCNetworkApiHandler)handler;
-/**
- 取消掉请求
- */
-- (void)cancel;
 
 @optional;
 /**
@@ -59,6 +55,15 @@ typedef void(^SCNetworkApiHandler)(NSObject<SCNetworkBaseApiProtocol> *api,id re
  HTTP 请求UA，优先级大于httpHeader
  */
 - (NSString *)userAgent;
+
+/**
+ 取消掉请求
+ */
+- (void)cancel;
+/**
+ 注册取消回调，当调用cancel时，该handler回调
+ */
+- (void)registerCancelHandler:(void(^)(NSObject <SCNetworkBaseApiProtocol>*api))handler;
 
 @end
 

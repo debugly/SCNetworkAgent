@@ -144,6 +144,10 @@
         }
     }];
     
+    [api registerCancelHandler:^(NSObject<SCNetworkBaseApiProtocol> *api) {
+        [req cancel];
+    }];
+    
     req.responseParser = nil;
     [[SCNetworkService sharedService] startRequest:req];
 }

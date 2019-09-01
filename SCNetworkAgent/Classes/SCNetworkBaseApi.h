@@ -40,10 +40,14 @@
  */
 @property (nonatomic, copy) SCNetworkApiHandler handler;
 
-#warning TODO cancel
 /**
  取消掉请求
  */
 - (void)cancel;
+
+/**
+ 注册取消回调，当调用cancel时，该handler回调
+ */
+- (void)registerCancelHandler:(void(^)(NSObject <SCNetworkBaseApiProtocol>*api))handler;
 
 @end
