@@ -10,10 +10,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  var result = {};
+    var result = {};
     result['status'] = 200;
-    result['msg'] = req.body;
-    console.log(req.body);
+    result['body'] = req.body;
+    result['query'] = req.query;
+    console.log("body:" + JSON.stringify(req.body));
     res.write(JSON.stringify(result));
     res.end();
 });

@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SCNetworkFormPart.h"
+#import "SCNetworkResponseParserProtocol.h"
 
 typedef enum : NSUInteger {
     SCNetworkHttpMethod_GET = 1,
@@ -21,8 +22,42 @@ typedef enum : NSUInteger {
 } SCNetworkPostEncoding;
 
 
-@protocol SCNetworkBaseApiProtocol;
-typedef void(^SCNetworkApiHandler)(NSObject<SCNetworkBaseApiProtocol> *api,id result,NSError *err);
+@protocol SCNetworkBaseApiProtocol,SCNetworkBaseApiResponseProtocol;
+typedef void(^SCNetworkApiHandler)(NSObject<SCNetworkBaseApiProtocol> * api,NSObject<SCNetworkBaseApiResponseProtocol>* resp);
+
+@protocol SCNetworkBaseApiResponseProtocol <NSObject>
+
+@required;
+/**
+ the HTTP status code
+ */
+- (NSInteger)statusCode;
+/**
+ all the HTTP header fields
+ */
+- (NSDictionary *)allHeaderFields;
+/**
+ the MIME type
+ */
+- (NSString *)MIMEType;
+/**
+ the expected content length
+ */
+- (long long)expectedContentLength;
+/**
+ the expected content
+ */
+- (NSData *)data;
+/**
+ the http error or parser error
+ */
+- (NSError *)err;
+/**
+ parser result
+ */
+- (id)parserResult;
+
+@end
 
 @protocol SCNetworkBaseApiProtocol <NSObject>
 
@@ -60,10 +95,16 @@ typedef void(^SCNetworkApiHandler)(NSObject<SCNetworkBaseApiProtocol> *api,id re
  取消掉请求
  */
 - (void)cancel;
+
 /**
  注册取消回调，当调用cancel时，该handler回调
  */
 - (void)registerCancelHandler:(void(^)(NSObject <SCNetworkBaseApiProtocol>*api))handler;
+
+/**
+ 响应解析器
+ */
+- (NSObject<SCNetworkResponseParserProtocol> *)responseParser;
 
 @end
 

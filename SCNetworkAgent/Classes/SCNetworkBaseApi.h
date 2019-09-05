@@ -41,6 +41,11 @@
 @property (nonatomic, copy) SCNetworkApiHandler handler;
 
 /**
+ 响应解析器
+ */
+@property (nonatomic, strong) NSObject<SCNetworkResponseParserProtocol> * responseParser;
+
+/**
  取消掉请求
  */
 - (void)cancel;
@@ -49,5 +54,6 @@
  注册取消回调，当调用cancel时，该handler回调
  */
 - (void)registerCancelHandler:(void(^)(NSObject <SCNetworkBaseApiProtocol>*api))handler;
+
 
 @end

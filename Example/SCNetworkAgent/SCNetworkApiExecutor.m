@@ -8,6 +8,7 @@
 
 #import "SCNetworkApiExecutor.h"
 #import <SCNetworkKit/SCNetworkKit.h>
+#import <SCNetworkAgent/SCNetworkBaseApiResponse.h>
 
 @implementation SCNetworkApiExecutor
 
@@ -138,9 +139,28 @@
     if (ua.length > 0) {
         [req addHeaders:@{@"User-Agent":ua}];
     }
-    [req addCompletionHandler:^(SCNetworkRequest *request, id result, NSError *err) {
+    
+    [req addCompletionHandler:^(SCNetworkRequest *request, NSData * result, NSError *err) {
+        
+        SCNetworkBaseApiResponse *resp = [SCNetworkBaseApiResponse new];
+        resp.statusCode = 200;
+        resp.expectedContentLength = [result length];
+        resp.data = result;
+
+        if (err) {
+            resp.err = err;
+        } else if (api.responseParser) {
+            NSError *parserErr = nil;
+            BOOL httpOk = [api.responseParser validateResponse:resp error:&parserErr];
+            if (httpOk) {
+                id parserR = [api.responseParser parser:resp error:&parserErr];
+                resp.parserResult = parserR;
+            }
+            resp.err = parserErr;
+        }
+        
         if (api.handler) {
-            api.handler(api,result,err);
+            api.handler(api,resp);
         }
     }];
     

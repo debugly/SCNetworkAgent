@@ -306,7 +306,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-SCNetworkAgent_Example/Pods-SCNetworkAgent_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-SCNetworkAgent_Example/Pods-SCNetworkAgent_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SCNetworkAgent/SCNetworkAgent.framework",
 				"${BUILT_PRODUCTS_DIR}/SCNetworkKit/SCNetworkKit.framework",
 			);
@@ -317,7 +317,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SCNetworkAgent_Example/Pods-SCNetworkAgent_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SCNetworkAgent_Example/Pods-SCNetworkAgent_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E788B0246CAA4806B2F46080 /* [CP] Check Pods Manifest.lock */ = {
