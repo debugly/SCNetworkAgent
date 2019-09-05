@@ -26,6 +26,8 @@
 		B45C07A1231A7EDD00DFF8E5 /* node.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B45C07A0231A7EDD00DFF8E5 /* node.jpg */; };
 		B45C07A3231A7F8500DFF8E5 /* note.txt in Resources */ = {isa = PBXBuildFile; fileRef = B45C07A2231A7F8400DFF8E5 /* note.txt */; };
 		BF7EAB4D08092D7486C3F81B /* Pods_SCNetworkAgent_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185A7100ED73FDBF19B38FD2 /* Pods_SCNetworkAgent_Example.framework */; };
+		DDC8990C2320AF27000EB3DB /* SCJson2ModelParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC8990A2320AF27000EB3DB /* SCJson2ModelParser.m */; };
+		DDC8990F2320B04E000EB3DB /* VideoList.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC8990E2320B04E000EB3DB /* VideoList.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,10 @@
 		B45C07A0231A7EDD00DFF8E5 /* node.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = node.jpg; sourceTree = "<group>"; };
 		B45C07A2231A7F8400DFF8E5 /* note.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = note.txt; sourceTree = "<group>"; };
 		C9D37E9A644F99E3053B68AD /* Pods_SCNetworkAgent_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SCNetworkAgent_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDC8990A2320AF27000EB3DB /* SCJson2ModelParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCJson2ModelParser.m; sourceTree = "<group>"; };
+		DDC8990B2320AF27000EB3DB /* SCJson2ModelParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCJson2ModelParser.h; sourceTree = "<group>"; };
+		DDC8990D2320B04E000EB3DB /* VideoList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoList.h; sourceTree = "<group>"; };
+		DDC8990E2320B04E000EB3DB /* VideoList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoList.m; sourceTree = "<group>"; };
 		EA447F4749A806F96ED6B2C4 /* Pods-SCNetworkAgent_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCNetworkAgent_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-SCNetworkAgent_Example/Pods-SCNetworkAgent_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -140,8 +146,12 @@
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* SCViewController.h */,
 				6003F5A6195388D20070C39A /* SCViewController.m */,
+				DDC8990D2320B04E000EB3DB /* VideoList.h */,
+				DDC8990E2320B04E000EB3DB /* VideoList.m */,
 				B45C0791231A0FA300DFF8E5 /* SCNetworkApiExecutor.h */,
 				B45C0792231A0FA300DFF8E5 /* SCNetworkApiExecutor.m */,
+				DDC8990B2320AF27000EB3DB /* SCJson2ModelParser.h */,
+				DDC8990A2320AF27000EB3DB /* SCJson2ModelParser.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				B45C07A2231A7F8400DFF8E5 /* note.txt */,
 				B45C07A0231A7EDD00DFF8E5 /* node.jpg */,
@@ -307,11 +317,13 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SCNetworkAgent_Example/Pods-SCNetworkAgent_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SCJSONUtil/SCJSONUtil.framework",
 				"${BUILT_PRODUCTS_DIR}/SCNetworkAgent/SCNetworkAgent.framework",
 				"${BUILT_PRODUCTS_DIR}/SCNetworkKit/SCNetworkKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCJSONUtil.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCNetworkAgent.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCNetworkKit.framework",
 			);
@@ -346,8 +358,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F59E195388D20070C39A /* SCAppDelegate.m in Sources */,
+				DDC8990F2320B04E000EB3DB /* VideoList.m in Sources */,
 				6003F5A7195388D20070C39A /* SCViewController.m in Sources */,
 				B45C0793231A0FA300DFF8E5 /* SCNetworkApiExecutor.m in Sources */,
+				DDC8990C2320AF27000EB3DB /* SCJson2ModelParser.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -15,7 +15,10 @@
 #import <SCNetworkAgent/SCNetworkDownloadApi.h>
 #import <SCNetworkAgent/SCNetworkUploadApi.h>
 #import <SCNetworkAgent/SCNetworkJsonResponseParser.h>
+#import <SCNetworkAgent/SCNetworkModelResponseParser.h>
 #import "SCNetworkApiExecutor.h"
+#import "SCJson2ModelParser.h"
+#import "VideoList.h"
 
 @interface SCViewController ()
 
@@ -42,6 +45,29 @@
     
     [[SCNetworkAgent sharedAgent] execApi:api];
 }
+
+- (void)testBaseApiGetModel {
+    SCNetworkBaseApi *api = [SCNetworkBaseApi new];
+    api.method = SCNetworkHttpMethod_GET;
+    api.urlString = @"http://localhost:3000/json/Video.json";
+    api.queryParameters = @{@"k1":@"v1",@"k2":@"v2"};
+    SCNetworkModelResponseParser *responseParser = [[SCNetworkModelResponseParser alloc] init];
+    responseParser.checkKeyPath = @"qq.code";
+    responseParser.okValue = @"200";
+    responseParser.modelName = @"VideoList";
+    responseParser.refObj = @{@"qq":@"videos"};
+    api.responseParser = responseParser;
+    api.handler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
+        if (!resp.err) {
+            NSLog(@"get api suceed:%@",resp.parserResult);
+        } else {
+            NSLog(@"get api failed:%@",resp.err);
+        }
+    };
+    
+    [[SCNetworkAgent sharedAgent] execApi:api];
+}
+
 
 /**
  BaseApi 可以发送Post请求，但是不支持body！需要支持可用 SCNetworkPostApi 。
@@ -186,9 +212,16 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    [[SCNetworkAgent sharedAgent] injectExecutor:[SCNetworkApiExecutor class]];
+    {
+        //!!!!!! 这是只是写个demo，实际项目中建议放到App启动之后，避免使用的时候找不到解析器 !!!!!!
+        //使用Model响应解析器前，必须注入model解析器类！！!
+        [SCNetworkModelResponseParser registerModelParser:[SCJson2ModelParser class]];
+        //SCNetworkAgent 只是网络请求的协议层，因此需要注入实际的执行者才能发送请求！
+        [[SCNetworkAgent sharedAgent] injectExecutor:[SCNetworkApiExecutor class]];
+    }
     
-    [self testBaseApiGet];
+//    [self testBaseApiGet];
+    [self testBaseApiGetModel];
 //    [self testBaseApiPost];
 //    [self testPostApi];
 //    [self testFormDataPostApi];
