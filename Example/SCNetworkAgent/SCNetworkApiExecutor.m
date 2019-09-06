@@ -99,22 +99,22 @@
         switch ([postApi parametersEncoding]) {
             case SCNetworkPostEncodingURL:
             {
-                postReq.parameterEncoding = SCNKParameterEncodingURL;
+                postReq.parameterEncoding = SCNPostDataEncodingURL;
             }
                 break;
             case SCNetworkPostEncodingJSON:
             {
-                postReq.parameterEncoding = SCNKParameterEncodingJSON;
+                postReq.parameterEncoding = SCNPostDataEncodingJSON;
             }
                 break;
             case SCNetworkPostEncodingPlist:
             {
-                postReq.parameterEncoding = SCNKParameterEncodingPlist;
+                postReq.parameterEncoding = SCNPostDataEncodingPlist;
             }
                 break;
             case SCNetworkPostEncodingFormData:
             {
-                postReq.parameterEncoding = SCNKParameterEncodingFormData;
+                postReq.parameterEncoding = SCNPostDataEncodingFormData;
             }
                 break;
         }
@@ -128,7 +128,7 @@
             if (queryParams) {
                 [postReq addQueryParameters:queryParams];
             }
-            postReq.parameterEncoding = SCNKParameterEncodingURL;
+            postReq.parameterEncoding = SCNPostDataEncodingURL;
             req = postReq;
         }
     } else {
