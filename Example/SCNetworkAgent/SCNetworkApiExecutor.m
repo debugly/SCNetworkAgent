@@ -45,7 +45,7 @@
     
     NSDictionary *header = [api header];
     NSDictionary *queryParams = [api queryParameters];
-    NSString *ua = [api userAgent];
+    NSString *ua  = [api userAgent];
     NSString *url = [api urlString];
     SCNetworkHttpMethod httpMethod = [api method];
     
@@ -59,7 +59,11 @@
         if (queryParams) {
             [postReq addQueryParameters:queryParams];
         }
-        
+        [postReq addProgressChangedHandler:^(SCNetworkRequest *request, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected) {
+            if ([uploadApi respondsToSelector:@selector(progressHandler)]) {
+                uploadApi.progressHandler(uploadApi,thisTransfered,totalBytesTransfered,totalBytesExpected);
+            }
+        }];
         NSAssert([uploadApi parametersEncoding] == SCNetworkPostEncodingFormData, @"Upload must use FormData Encoding!");
         
         if ([[uploadApi formParts] count] > 0) {
@@ -87,6 +91,11 @@
         req = [[SCNetworkRequest alloc] initWithURLString:url params:queryParams];
         NSAssert(downloadApi.downloadFilePath.length != 0, @"download must has downloadFilePath!");
         req.downloadFileTargetPath = downloadApi.downloadFilePath;
+        [req addProgressChangedHandler:^(SCNetworkRequest *request, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected) {
+            if ([downloadApi respondsToSelector:@selector(progressHandler)]) {
+                downloadApi.progressHandler(downloadApi,thisTransfered,totalBytesTransfered,totalBytesExpected);
+            }
+        }];
     } else if ([api conformsToProtocol:@protocol(SCNetworkPostApiProtocol)]) {
         NSAssert(httpMethod == SCNetworkHttpMethod_POST, @"SCNetworkPostApiProtocol must use Http Post!");
         NSObject <SCNetworkPostApiProtocol> *postApi = (id)api;
@@ -159,8 +168,8 @@
             resp.err = parserErr;
         }
         
-        if (api.handler) {
-            api.handler(api,resp);
+        if (api.responseHandler) {
+            api.responseHandler(api,resp);
         }
     }];
     

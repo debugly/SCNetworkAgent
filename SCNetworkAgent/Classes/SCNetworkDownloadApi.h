@@ -10,5 +10,6 @@
 @interface SCNetworkDownloadApi : SCNetworkBaseApi<SCNetworkDownloadApiProtocol>
 
 @property (nonatomic, copy) NSString* downloadFilePath;
+@property (nonatomic, copy) SCNetworkApiProgressHandler progressHandler;
 
 @end

@@ -10,7 +10,7 @@
 @protocol SCNetworkBaseApiResponseProtocol;
 @protocol SCNetworkResponseParserProtocol <NSObject>
 
-@required;
+@required
 
 - (BOOL)validateResponse:(NSObject<SCNetworkBaseApiResponseProtocol>*)response
                    error:(NSError * __autoreleasing *)error;

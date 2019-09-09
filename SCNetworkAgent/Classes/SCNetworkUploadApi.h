@@ -13,5 +13,6 @@
 @property (nonatomic, strong) NSArray <SCNetworkFormPart *>* formParts;
 //必须是: multipart/form-data
 - (SCNetworkPostEncoding)parametersEncoding;
+@property (nonatomic, copy) SCNetworkApiProgressHandler progressHandler;
 
 @end

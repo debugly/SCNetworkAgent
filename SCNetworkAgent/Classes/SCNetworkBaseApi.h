@@ -38,7 +38,7 @@
 /**
  HTTP 请求着陆回调
  */
-@property (nonatomic, copy) SCNetworkApiHandler handler;
+@property (nonatomic, copy) SCNetworkApiResponseHandler responseHandler;
 
 /**
  响应解析器

@@ -23,11 +23,14 @@ typedef enum : NSUInteger {
 
 
 @protocol SCNetworkBaseApiProtocol,SCNetworkBaseApiResponseProtocol;
-typedef void(^SCNetworkApiHandler)(NSObject<SCNetworkBaseApiProtocol> * api,NSObject<SCNetworkBaseApiResponseProtocol>* resp);
+//响应回调
+typedef void(^SCNetworkApiResponseHandler)(NSObject<SCNetworkBaseApiProtocol> * api,NSObject<SCNetworkBaseApiResponseProtocol>* resp);
+//上传、下载进度回调
+typedef void(^SCNetworkApiProgressHandler)(NSObject<SCNetworkBaseApiProtocol> * api, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected);
 
 @protocol SCNetworkBaseApiResponseProtocol <NSObject>
 
-@required;
+@required
 /**
  the HTTP status code
  */
@@ -61,7 +64,7 @@ typedef void(^SCNetworkApiHandler)(NSObject<SCNetworkBaseApiProtocol> * api,NSOb
 
 @protocol SCNetworkBaseApiProtocol <NSObject>
 
-@required;
+@required
 /**
  HTTP 请求地址
  */
@@ -73,9 +76,9 @@ typedef void(^SCNetworkApiHandler)(NSObject<SCNetworkBaseApiProtocol> * api,NSOb
 /**
  HTTP 请求着陆回调
  */
-- (SCNetworkApiHandler)handler;
+- (SCNetworkApiResponseHandler)responseHandler;
 
-@optional;
+@optional
 /**
  HTTP 请求参数，URL上带的参数
  */
@@ -110,10 +113,10 @@ typedef void(^SCNetworkApiHandler)(NSObject<SCNetworkBaseApiProtocol> * api,NSOb
 
 @protocol SCNetworkPostApiProtocol <SCNetworkBaseApiProtocol>
 
-@required;
+@required
 //默认是: application/x-www-form-urlencoded
 - (SCNetworkPostEncoding)parametersEncoding;
-@optional;
+@optional
 /**
  HTTP 请求体参数
  */
@@ -124,21 +127,31 @@ typedef void(^SCNetworkApiHandler)(NSObject<SCNetworkBaseApiProtocol> * api,NSOb
 
 @protocol SCNetworkDownloadApiProtocol <SCNetworkBaseApiProtocol>
 
-@required;
+@required
 /**
  文件下载路径
  */
 - (NSString *)downloadFilePath;
 
+@optional
+/**
+ 下载进度回调
+ */
+- (SCNetworkApiProgressHandler)progressHandler;
 @end
 
 
 @protocol SCNetworkUploadApiProtocol <SCNetworkPostApiProtocol>
 
-@required;
+@required
 //必须是: multipart/form-data
 - (SCNetworkPostEncoding)parametersEncoding;
 
 - (NSArray <SCNetworkFormPart *>*)formParts;
 
+@optional
+/**
+ 上传进度回调
+ */
+- (SCNetworkApiProgressHandler)progressHandler;
 @end

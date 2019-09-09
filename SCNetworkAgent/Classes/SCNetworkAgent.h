@@ -18,7 +18,7 @@
 
 @protocol SCNetworkApiExecutorProtocol <NSObject>
 
-@required;
+@required
 + (BOOL)canProcessApi:(NSObject<SCNetworkBaseApiProtocol> *)api;
 + (void)doProcessApi:(NSObject<SCNetworkBaseApiProtocol> *)api;
 
