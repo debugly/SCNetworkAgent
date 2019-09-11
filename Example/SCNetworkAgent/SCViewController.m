@@ -11,9 +11,9 @@
 #define USE_CHARLES 1
 
 #if USE_CHARLES
-    #define HOST @"http://localhost.charlesproxy.com:3000"
+    #define HOST @"localhost.charlesproxy.com:3000"
 #else
-    #define HOST @"http://localhost:3000"
+    #define HOST @"localhost:3000"
 #endif
 
 #import "SCViewController.h"
@@ -36,7 +36,7 @@
 
 - (NSString *)urlWithPath:(NSString *)path
 {
-    return [HOST stringByAppendingPathComponent:path];
+    return [@"http://" stringByAppendingString:[HOST stringByAppendingPathComponent:path]];
 }
 
 - (void)testBaseApiGet {
