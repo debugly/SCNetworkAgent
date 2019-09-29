@@ -25,5 +25,6 @@
 @property (nonatomic,strong) id refObj;
 
 + (void)registerModelParser:(Class<SCNetworkModelParserProtocol>)parser;
++ (Class<SCNetworkModelParserProtocol>)modelParser;
 
 @end

@@ -238,13 +238,13 @@
         [[SCNetworkAgent sharedAgent] injectExecutor:[SCNetworkApiExecutor class]];
     }
     
-//    [self testBaseApiGet];
+    [self testBaseApiGet];
 //    [self testBaseApiGetModel];
 //    [self testBaseApiPost];
 //    [self testPostApi];
 //    [self testFormDataPostApi];
 //    [self testUploadApi];
-    [self testDownloadApi];
+//    [self testDownloadApi];
 //    [self testCancelApi];
 }
 
