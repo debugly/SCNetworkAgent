@@ -8,6 +8,11 @@
 #import "SCNetworkJsonResponseParser.h"
 #import "SCNetworkApiProtocol.h"
 
+NSString *const SCNJsonParserErrorKey_OkValue = @"OkValue";
+NSString *const SCNJsonParserErrorKey_CheckKeyPath = @"CheckKeyPath";
+NSString *const SCNJsonParserErrorKey_RealValue = @"RealValue";
+NSString *const SCNJsonParserErrorKey_RawJSON = @"RawJSON";
+
 @implementation SCNetworkJsonResponseParser
 
 - (instancetype)init
@@ -115,14 +120,13 @@
             if(!isValidate){
                 if(error){
                     NSMutableDictionary *info = [NSMutableDictionary new];
-                    [info setObject:@"json parser invalid" forKey:@"reason"];
-                    [info setObject:self.checkKeyPath forKey:@"check keypath"];
-                    [info setObject:self.okValue forKey:@"want value"];
-                    [info setObject:v?v:@"nil" forKey:@"real value"];
-                    NSDictionary *userInfo = @{
-                                               NSLocalizedDescriptionKey : info
-                                               };
-                    *error = [[NSError alloc] initWithDomain:@"com.sc.networkagent" code:NSURLErrorCannotParseResponse userInfo:userInfo];
+                    [info setObject:@"json parser invalid" forKey:NSLocalizedDescriptionKey];
+                    [info setObject:@"check value is not equal to okValue" forKey:NSLocalizedFailureReasonErrorKey];
+                    [info setObject:self.checkKeyPath forKey:SCNJsonParserErrorKey_CheckKeyPath];
+                    [info setObject:self.okValue forKey:SCNJsonParserErrorKey_OkValue];
+                    [info setObject:v?v:@"nil" forKey:SCNJsonParserErrorKey_RealValue];
+                    [info setObject:json forKey:SCNJsonParserErrorKey_RawJSON];
+                    *error = [[NSError alloc] initWithDomain:SCNResponseParserErrorDomain code:NSURLErrorCannotParseResponse userInfo:info];
                 }
                 return nil;
             }

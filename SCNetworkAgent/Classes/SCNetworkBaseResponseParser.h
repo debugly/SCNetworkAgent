@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 #import "SCNetworkResponseParserProtocol.h"
 
+FOUNDATION_EXPORT NSString *const SCNResponseParserErrorDomain;
+
 @interface SCNetworkBaseResponseParser : NSObject<SCNetworkResponseParserProtocol>
 
 @property (nonatomic, copy, nullable) NSIndexSet *acceptableStatusCodes;

@@ -7,6 +7,11 @@
 
 #import "SCNetworkBaseResponseParser.h"
 
+FOUNDATION_EXPORT NSString *const SCNJsonParserErrorKey_OkValue;
+FOUNDATION_EXPORT NSString *const SCNJsonParserErrorKey_CheckKeyPath;
+FOUNDATION_EXPORT NSString *const SCNJsonParserErrorKey_RealValue;
+FOUNDATION_EXPORT NSString *const SCNJsonParserErrorKey_RawJSON;
+
 @interface SCNetworkJsonResponseParser : SCNetworkBaseResponseParser
 
 ///default is YES

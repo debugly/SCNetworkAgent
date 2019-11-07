@@ -8,6 +8,8 @@
 #import "SCNetworkBaseResponseParser.h"
 #import "SCNetworkApiProtocol.h"
 
+NSString *const SCNResponseParserErrorDomain = @"com.sc.networkagent";
+
 @implementation SCNetworkBaseResponseParser
 
 - (instancetype)init
@@ -32,7 +34,7 @@
             NSDictionary *userInfo = @{
                                        NSLocalizedDescriptionKey : [NSString stringWithFormat:@"unacceptable content-type: %@", [response MIMEType]]
                                        };
-            validationError = [[NSError alloc] initWithDomain:@"com.sc.networkagent" code:NSURLErrorCannotParseResponse userInfo:userInfo];
+            validationError = [[NSError alloc] initWithDomain:SCNResponseParserErrorDomain code:NSURLErrorCannotParseResponse userInfo:userInfo];
 
             responseIsValid = NO;
         }
@@ -41,7 +43,7 @@
             NSDictionary *userInfo = @{
                                        NSLocalizedDescriptionKey : [NSString stringWithFormat:@"Request failed: %ld", (long)[response statusCode]]
                                        };
-            validationError = [[NSError alloc] initWithDomain:@"com.sc.networkagent" code:NSURLErrorBadServerResponse userInfo:userInfo];
+            validationError = [[NSError alloc] initWithDomain:SCNResponseParserErrorDomain code:NSURLErrorBadServerResponse userInfo:userInfo];
             
             responseIsValid = NO;
         }

@@ -52,12 +52,11 @@ static Class <SCNetworkModelParserProtocol> MParser;
         ///如果传了error指针地址了
         if(error){
             ///result is nil;
-            NSDictionary *info = @{@"reason":[NSString stringWithFormat:@"can't find target json for %@",self.modelName],
-                                   @"origin":json};
-            NSDictionary * userInfo = @{
-                                        NSLocalizedDescriptionKey : info
-                                        };
-            *error = [[NSError alloc] initWithDomain:@"com.sc.networkagent" code:NSURLErrorCannotParseResponse userInfo:userInfo];
+            
+            NSDictionary *info = @{NSLocalizedDescriptionKey:@"can't find target json",
+                                   NSLocalizedFailureReasonErrorKey:[NSString stringWithFormat:@"can't find target json for %@",self.modelName],
+                                   SCNJsonParserErrorKey_RawJSON:json};
+            *error = [[NSError alloc] initWithDomain:SCNResponseParserErrorDomain code:NSURLErrorCannotParseResponse userInfo:info];
         }
     }
     return result;
