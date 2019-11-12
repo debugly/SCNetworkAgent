@@ -132,6 +132,8 @@ typedef void(^SCNetworkApiProgressHandler)(NSObject<SCNetworkBaseApiProtocol> * 
  文件下载路径
  */
 - (NSString *)downloadFilePath;
+///使用断点续传，默认不使用
+@property (nonatomic, assign) BOOL useBreakpointContinuous;
 
 @optional
 /**

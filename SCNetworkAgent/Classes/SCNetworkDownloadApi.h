@@ -11,5 +11,7 @@
 
 @property (nonatomic, copy) NSString* downloadFilePath;
 @property (nonatomic, copy) SCNetworkApiProgressHandler progressHandler;
+///使用断点续传，默认不使用
+@property (nonatomic, assign) BOOL useBreakpointContinuous;
 
 @end
