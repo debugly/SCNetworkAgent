@@ -22,7 +22,7 @@ pod 'SCNetworkAgent'
 
 ## Author
 
-debugly, qianglongxu@home.mbp
+MattReach, qianglongxu@gmail.com
 
 ## License
 

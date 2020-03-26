@@ -9,34 +9,20 @@
 Pod::Spec.new do |s|
   s.name             = 'SCNetworkAgent'
   s.version          = '0.1.8'
-  s.summary          = 'A short description of SCNetworkAgent.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
+  s.summary          = 'A cocoa network abstract layer.'
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+  SCNetworkAgent module is a cocoa network abstract layer, business module needn't care the owner network implementation.
+  The owner must implement SCNetworkAgent's methods by registration before business module send request!
                        DESC
 
   s.homepage         = 'https://github.com/debugly/SCNetworkAgent'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'debugly' => 'qianglongxu@home.mbp' }
+  s.author           = { 'MattReach' => 'qianglongxu@gmail.com' }
   s.source           = { :git => 'https://github.com/debugly/SCNetworkAgent.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '7.0'
   s.osx.deployment_target = '10.10'
-  s.source_files = 'SCNetworkAgent/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'SCNetworkAgent' => ['SCNetworkAgent/Assets/*.png']
-  # }
+  s.source_files = 'SCNetworkAgent/Classes/**/*'  
+  s.frameworks = 'Foundation'
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end
