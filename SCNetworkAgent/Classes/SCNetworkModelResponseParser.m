@@ -22,10 +22,14 @@ static Class <SCNetworkModelParserProtocol> MParser;
     return MParser;
 }
 
-- (id)parser:(NSObject<SCNetworkBaseApiResponseProtocol> *)resp error:(NSError *__autoreleasing *)error
+- (id)parser:(NSObject<SCNetworkBaseApiResponseProtocol> *)resp error:(NSError *__autoreleasing *)errp
 {
-    id json = [super parser:resp error:error];
-    if (!json) {
+    NSError *error = nil;
+    id json = [super parser:resp error:&error];
+    if (error) {
+        if (errp) {
+            *errp = error;
+        }
         return nil;
     }
     
@@ -34,7 +38,6 @@ static Class <SCNetworkModelParserProtocol> MParser;
     }
     
     id result = json;
-    
     if (result) {
         if (self.modelName.length > 0) {
             //解析目标JSON
@@ -44,17 +47,19 @@ static Class <SCNetworkModelParserProtocol> MParser;
             result = [MParser JSON2StringValueJSON:result];
             //SCJSON2StringJOSN(result);
         }
-    }else{
-        ///如果传了error指针地址了
-        if(error){
-            ///result is nil;
-            
+    }
+    
+    ///result is nil;
+    if(!result){
+        ///如果传了errp指针地址了
+        if(errp){
             NSDictionary *info = @{NSLocalizedDescriptionKey:@"can't find target json",
                                    NSLocalizedFailureReasonErrorKey:[NSString stringWithFormat:@"can't find target json for %@",self.modelName],
                                    SCNJsonParserErrorKey_RawJSON:json};
-            *error = [[NSError alloc] initWithDomain:SCNResponseParserErrorDomain code:NSURLErrorCannotParseResponse userInfo:info];
+            *errp = [[NSError alloc] initWithDomain:SCNResponseParserErrorDomain code:NSURLErrorCannotParseResponse userInfo:info];
         }
     }
+    
     return result;
 }
 

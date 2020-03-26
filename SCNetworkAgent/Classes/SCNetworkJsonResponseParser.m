@@ -176,6 +176,15 @@ static inline id SCFindJSONwithKeyPathArr(NSArray *pathArr,NSDictionary *JSON)
         json = SCFindJSONwithKeyPath(self.targetKeyPath, json);
     }
     
+    if(!json){
+        if (error && ! *error) {
+            NSDictionary *userInfo = @{
+                                       NSLocalizedDescriptionKey : @"can't find target json"
+                                       };
+            *error = [[NSError alloc] initWithDomain:@"com.sc.networkagent" code:NSURLErrorCannotParseResponse userInfo:userInfo];
+        }
+    }
+    
     return json;
 }
 
