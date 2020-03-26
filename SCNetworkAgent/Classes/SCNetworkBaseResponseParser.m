@@ -61,4 +61,9 @@ NSString *const SCNResponseParserErrorDomain = @"com.sc.networkagent";
     return resp.data;
 }
 
++ (instancetype)parser
+{
+    return [[self alloc] init];
+}
+
 @end

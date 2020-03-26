@@ -10,7 +10,7 @@
 #import "SCNetworkResponseParserProtocol.h"
 
 typedef enum : NSUInteger {
-    SCNetworkHttpMethod_GET = 1,
+    SCNetworkHttpMethod_GET,
     SCNetworkHttpMethod_POST
 } SCNetworkHttpMethod;
 

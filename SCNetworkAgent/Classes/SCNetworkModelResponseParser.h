@@ -10,7 +10,6 @@
 @protocol SCNetworkModelParserProtocol <NSObject>
 
 @required
-+ (id)fetchSubJSON:(id)json keyPath:(NSString *)keypath;
 + (id)JSON2Model:(id)json modelName:(NSString *)mName refObj:(id)refObj;
 + (id)JSON2StringValueJSON:(id)json;
 
@@ -20,7 +19,6 @@
 @interface SCNetworkModelResponseParser : SCNetworkJsonResponseParser
 
 @property (nonatomic,copy) NSString *modelName;
-@property (nonatomic,copy) NSString *modelKeyPath;
 // for JSONUtil
 @property (nonatomic,strong) id refObj;
 

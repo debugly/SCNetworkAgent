@@ -19,5 +19,6 @@ FOUNDATION_EXPORT NSString *const SCNJsonParserErrorKey_RawJSON;
 
 @property (nonatomic, copy) NSString *checkKeyPath;
 @property (nonatomic, copy) NSString *okValue;
+@property (nonatomic, copy) NSString *targetKeyPath;
 
 @end

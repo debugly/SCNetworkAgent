@@ -35,14 +35,20 @@
 
 - (void)execApi:(NSObject<SCNetworkBaseApiProtocol> *)api
 {
+    NSAssert([self.executors count] > 0, @"you must inject api executor before exec the api:%@",api);
+
+    BOOL found = NO;
     for (Class<SCNetworkApiExecutorProtocol> clazz in self.executors) {
         if ([clazz respondsToSelector:@selector(canProcessApi:)]) {
             if ([clazz canProcessApi:api]) {
                 [clazz doProcessApi:api];
+                found = YES;
                 break;
             }
         }
     }
+    
+    NSAssert(found, @"can't process the api:%@",api);
 }
 
 @end

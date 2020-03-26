@@ -70,6 +70,38 @@ NSString *const SCNJsonParserErrorKey_RawJSON = @"RawJSON";
     return JSONObject;
 }
 
+static id SCFindJSONwithKeyPath(NSString *keyPath,NSDictionary *JSON)
+{
+    if (!keyPath || keyPath.length == 0) {
+        return JSON;
+    }
+    NSArray *pathArr = [keyPath componentsSeparatedByString:@"/"];
+    return SCFindJSONwithKeyPathArr(pathArr, JSON);
+}
+
+static inline id SCFindJSONwithKeyPathArr(NSArray *pathArr,NSDictionary *JSON)
+{
+    if (!JSON) {
+        return nil;
+    }
+    if (!pathArr || pathArr.count == 0) {
+        return JSON;
+    }
+    NSMutableArray *pathArr2 = [NSMutableArray arrayWithArray:pathArr];
+    
+    while ([pathArr2 firstObject] && [[pathArr2 firstObject] description].length == 0) {
+        [pathArr2 removeObjectAtIndex:0];
+    }
+    if ([pathArr2 firstObject]) {
+        JSON = [JSON objectForKey:[pathArr2 firstObject]];
+        [pathArr2 removeObjectAtIndex:0];
+        return SCFindJSONwithKeyPathArr(pathArr2, JSON);
+    }else{
+        return JSON;
+    }
+}
+
+
 - (id)parser:(NSObject<SCNetworkBaseApiResponseProtocol> *)resp
        error:(NSError * __autoreleasing *)error
 {
@@ -120,7 +152,7 @@ NSString *const SCNJsonParserErrorKey_RawJSON = @"RawJSON";
             if(!isValidate){
                 if(error){
                     NSMutableDictionary *info = [NSMutableDictionary new];
-                    [info setObject:@"json parser invalid" forKey:NSLocalizedDescriptionKey];
+                    [info setObject:[self.checkKeyPath stringByAppendingString:@" can't pass the check"] forKey:NSLocalizedDescriptionKey];
                     [info setObject:@"check value is not equal to okValue" forKey:NSLocalizedFailureReasonErrorKey];
                     [info setObject:self.checkKeyPath forKey:SCNJsonParserErrorKey_CheckKeyPath];
                     [info setObject:self.okValue forKey:SCNJsonParserErrorKey_OkValue];
@@ -137,6 +169,11 @@ NSString *const SCNJsonParserErrorKey_RawJSON = @"RawJSON";
             #endif
             return json;
         }
+    }
+    
+    //查找目标JSON
+    if (self.targetKeyPath.length > 0) {
+        json = SCFindJSONwithKeyPath(self.targetKeyPath, json);
     }
     
     return json;

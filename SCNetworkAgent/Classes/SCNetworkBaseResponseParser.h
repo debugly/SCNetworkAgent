@@ -12,7 +12,9 @@ FOUNDATION_EXPORT NSString *const SCNResponseParserErrorDomain;
 
 @interface SCNetworkBaseResponseParser : NSObject<SCNetworkResponseParserProtocol>
 
-@property (nonatomic, copy, nullable) NSIndexSet *acceptableStatusCodes;
-@property (nonatomic, copy, nullable) NSSet <NSString *> *acceptableContentTypes;
+@property (nonatomic, copy) NSIndexSet *acceptableStatusCodes;
+@property (nonatomic, copy) NSSet <NSString *> *acceptableContentTypes;
+
++ (instancetype)parser;
 
 @end

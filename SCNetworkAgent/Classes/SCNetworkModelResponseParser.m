@@ -34,10 +34,6 @@ static Class <SCNetworkModelParserProtocol> MParser;
     }
     
     id result = json;
-    //查找目标JSON
-    if (self.modelKeyPath.length > 0) {
-        result = [MParser fetchSubJSON:result keyPath:self.modelKeyPath];
-    }
     
     if (result) {
         if (self.modelName.length > 0) {
