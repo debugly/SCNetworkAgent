@@ -10,7 +10,7 @@
 
 @interface SCNetworkAgent : NSObject
 
-+ (instancetype)sharedAgent;
++ (instancetype)agent;
 
 - (void)execApi:(NSObject<SCNetworkBaseApiProtocol> *)api;
 
@@ -20,12 +20,12 @@
 
 @required
 + (BOOL)canProcessApi:(NSObject<SCNetworkBaseApiProtocol> *)api;
-+ (void)doProcessApi:(NSObject<SCNetworkBaseApiProtocol> *)api;
++ (void)doProcessApi:(NSObject<SCNetworkBaseApiProtocol> *)api agent:(SCNetworkAgent *)sender;
 
 @end
 
 @interface SCNetworkAgent (Injection)
 
-- (void)injectExecutor:(Class<SCNetworkApiExecutorProtocol>)executor;
++ (void)injectExecutor:(Class<SCNetworkApiExecutorProtocol>)executor;
 
 @end

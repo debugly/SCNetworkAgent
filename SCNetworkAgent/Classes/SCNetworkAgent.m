@@ -7,41 +7,24 @@
 
 #import "SCNetworkAgent.h"
 
-@interface SCNetworkAgent ()
-
-@property (nonatomic, strong) NSArray *executors;
-
-@end
+static NSArray *s_executors;
 
 @implementation SCNetworkAgent
 
-+ (instancetype)sharedAgent
++ (instancetype)agent
 {
-    static dispatch_once_t onceToken;
-    static id instance;
-    dispatch_once(&onceToken, ^{
-        instance = [[self alloc] init];
-    });
-    return instance;
-}
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-    }
-    return self;
+    return [[self alloc] init];
 }
 
 - (void)execApi:(NSObject<SCNetworkBaseApiProtocol> *)api
 {
-    NSAssert([self.executors count] > 0, @"you must inject api executor before exec the api:%@",api);
+    NSAssert([s_executors count] > 0, @"you must inject api executor before exec the api:%@",api);
 
     BOOL found = NO;
-    for (Class<SCNetworkApiExecutorProtocol> clazz in self.executors) {
+    for (Class<SCNetworkApiExecutorProtocol> clazz in [s_executors copy]) {
         if ([clazz respondsToSelector:@selector(canProcessApi:)]) {
             if ([clazz canProcessApi:api]) {
-                [clazz doProcessApi:api];
+                [clazz doProcessApi:api agent:self];
                 found = YES;
                 break;
             }
@@ -55,12 +38,12 @@
 
 @implementation SCNetworkAgent (Injection)
 
-- (void)injectExecutor:(Class<SCNetworkApiExecutorProtocol>)executor
++ (void)injectExecutor:(Class<SCNetworkApiExecutorProtocol>)executor
 {
     if (executor) {
-        NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:self.executors];
+        NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:s_executors];
         [arr addObject:executor];
-        self.executors = [arr copy];
+        s_executors = [arr copy];
     }
 }
 

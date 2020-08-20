@@ -6,7 +6,7 @@ PODS:
 DEPENDENCIES:
   - SCJSONUtil
   - SCNetworkAgent (from `../`)
-  - SCNetworkKit
+  - SCNetworkKit (= 1.0.18)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:

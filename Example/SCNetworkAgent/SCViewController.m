@@ -30,6 +30,8 @@
 
 @interface SCViewController ()
 
+@property (nonatomic, strong) SCNetworkAgent * sharedAgent;
+
 @end
 
 @implementation SCViewController
@@ -52,11 +54,11 @@
         if (!resp.err) {
             NSLog(@"get api suceed:%@",resp.parserResult);
         } else {
-            NSLog(@"get api failed:%@",resp.err);
+            NSAssert(NO, @"get api failed:%@",resp.err);
         }
     };
     
-    [[SCNetworkAgent sharedAgent] execApi:api];
+    [[self sharedAgent] execApi:api];
 }
 
 - (void)testBaseApiGetModel {
@@ -72,13 +74,14 @@
     api.responseParser = responseParser;
     api.responseHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
         if (!resp.err) {
+            NSAssert([resp.parserResult isKindOfClass:[VideoList class]], @"model parser error!");
             NSLog(@"get api suceed:%@",resp.parserResult);
         } else {
-            NSLog(@"get api failed:%@",resp.err);
+            NSAssert(NO,@"get api failed:%@",resp.err);
         }
     };
     
-    [[SCNetworkAgent sharedAgent] execApi:api];
+    [[self sharedAgent] execApi:api];
 }
 
 
@@ -98,11 +101,11 @@
         if (!resp.err) {
             NSLog(@"post api suceed:%@",resp.parserResult);
         } else {
-            NSLog(@"post api failed:%@",resp.err);
+            NSAssert(NO,@"post api failed:%@",resp.err);
         }
     };
     
-    [[SCNetworkAgent sharedAgent] execApi:api];
+    [[self sharedAgent] execApi:api];
 }
 
 - (void)testPostApi {
@@ -121,10 +124,10 @@
         if (!resp.err) {
             NSLog(@"post api suceed:%@",resp.parserResult);
         } else {
-            NSLog(@"post api failed:%@",resp.err);
+            NSAssert(NO,@"post api failed:%@",resp.err);
         }
     };
-    [[SCNetworkAgent sharedAgent] execApi:postApi];
+    [[self sharedAgent] execApi:postApi];
 }
 
 - (void)testFormDataPostApi {
@@ -143,10 +146,10 @@
         if (!resp.err) {
             NSLog(@"post api suceed:%@",resp.parserResult);
         } else {
-            NSLog(@"post api failed:%@",resp.err);
+            NSAssert(NO,@"post api failed:%@",resp.err);
         }
     };
-    [[SCNetworkAgent sharedAgent] execApi:postApi];
+    [[self sharedAgent] execApi:postApi];
 }
 
 - (void)testUploadApi {
@@ -159,13 +162,15 @@
     SCNetworkFormPart *filePart = [SCNetworkFormPart new];
     NSString *fileURL = [[NSBundle mainBundle]pathForResource:@"node" ofType:@"jpg"];
     filePart.data = [[NSData alloc]initWithContentsOfFile:fileURL];
+    filePart.name = @"node";
     filePart.fileName = @"node.jpg";
     filePart.mime = @"image/jpg";
-    filePart.name = @"node";
     
     SCNetworkFormPart *filePart2 = [SCNetworkFormPart new];
     filePart2.filePath = [[NSBundle mainBundle]pathForResource:@"note" ofType:@"txt"];
-    
+    filePart2.name = @"node";
+    filePart2.fileName = @"node.txt";
+    filePart2.mime = @"text/plain";
     uploadApi.formParts = @[filePart,filePart2];
     
     SCNetworkJsonResponseParser *responseParser = [[SCNetworkJsonResponseParser alloc] init];
@@ -177,32 +182,36 @@
         if (!resp.err) {
             NSLog(@"upload file suceed:%@",resp.parserResult);
         } else {
-            NSLog(@"upload file failed:%@",resp.err);
+            NSAssert(NO,@"upload file failed:%@",resp.err);
         }
     };
-    [[SCNetworkAgent sharedAgent] execApi:uploadApi];
+    [[self sharedAgent] execApi:uploadApi];
 }
 
 - (void)testDownloadApi {
     SCNetworkDownloadApi *downApi = [SCNetworkDownloadApi new];
     downApi.method = SCNetworkHttpMethod_GET;
-    downApi.urlString = [self urlWithPath:@"/images/node.jpg"];
+//    downApi.urlString = [self urlWithPath:@"/images/node.jpg"];
+    downApi.urlString = [self urlWithPath:@"/images/22.mkv"];
     downApi.queryParameters = @{@"k1":@"v1",@"k2":@"v2"};
-    NSString * downloadFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"node.jpg"];
-    downApi.downloadFilePath = downloadFilePath;
     
+    NSString * downloadFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[downApi.urlString lastPathComponent]];
+    downApi.downloadFilePath = downloadFilePath;
+    downApi.useBreakpointContinuous = NO;
+    NSLog(@"downloadFilePath:%@",downloadFilePath);
     downApi.progressHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected){
-        NSLog(@"%lld-%lld-%lld",thisTransfered,totalBytesTransfered,totalBytesExpected);
+        NSLog(@"%lld-%lld-%lld;%0.4f",thisTransfered,totalBytesTransfered,totalBytesExpected,1.0 * totalBytesTransfered/totalBytesExpected);
     };
     
     downApi.responseHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
+        SCNetworkDownloadApi *downloadApi = (SCNetworkDownloadApi *)api;
         if (!resp.err) {
-            NSLog(@"download file suceed:%@",resp.parserResult);
+            NSLog(@"download file suceed:%@",downloadApi.downloadFilePath);
         } else {
-            NSLog(@"download file failed:%@",resp.err);
+            NSAssert(NO,@"download file failed:%@",resp.err);
         }
     };
-    [[SCNetworkAgent sharedAgent] execApi:downApi];
+    [[self sharedAgent] execApi:downApi];
 }
 
 - (void)testCancelApi{
@@ -211,14 +220,10 @@
     api.urlString = @"http://debugly.cn/repository/test.json";
     api.queryParameters = @{@"k1":@"v1",@"k2":@"v2"};
     api.responseHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
-        if (!resp.err) {
-            NSLog(@"get api suceed:%@",resp.parserResult);
-        } else {
-            NSLog(@"get api failed:%@",resp.err);
-        }
+        NSAssert(NO,@"when cancel request not invoke here!");
     };
     
-    [[SCNetworkAgent sharedAgent] execApi:api];
+    [[self sharedAgent] execApi:api];
     //大致预估的时间，可适当调整，达到cancel的目的
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [api cancel];
@@ -238,7 +243,9 @@
         [[SCNetworkAgent sharedAgent] injectExecutor:[SCNetworkApiExecutor class]];
     }
     
-    [self testBaseApiGet];
+    self.sharedAgent = [SCNetworkAgent new];
+    
+//    [self testBaseApiGet];
 //    [self testBaseApiGetModel];
 //    [self testBaseApiPost];
 //    [self testPostApi];
