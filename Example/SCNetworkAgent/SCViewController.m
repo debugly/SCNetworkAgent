@@ -8,7 +8,7 @@
 
 //将 localhost 换成 localhost.charlesproxy.com 可用 charles 代理抓包。
 
-#define USE_CHARLES 1
+#define USE_CHARLES 0
 
 #if USE_CHARLES
     #define HOST @"localhost.charlesproxy.com:3000"
@@ -24,7 +24,8 @@
 #import <SCNetworkAgent/SCNetworkUploadApi.h>
 #import <SCNetworkAgent/SCNetworkJsonResponseParser.h>
 #import <SCNetworkAgent/SCNetworkModelResponseParser.h>
-#import "SCNetworkApiExecutor.h"
+#import "SCApiExecutorForSCNetworkKit.h"
+#import "SCApiExecutorForAFURLConnect.h"
 #import "SCJson2ModelParser.h"
 #import "VideoList.h"
 
@@ -240,7 +241,8 @@
         //使用Model响应解析器前，必须注入model解析器类！！!
         [SCNetworkModelResponseParser registerModelParser:[SCJson2ModelParser class]];
         //SCNetworkAgent 只是网络请求的协议层，因此需要注入实际的执行者才能发送请求！
-        [[SCNetworkAgent sharedAgent] injectExecutor:[SCNetworkApiExecutor class]];
+        [SCNetworkAgent injectExecutor:[SCApiExecutorForAFURLConnect class]];
+        [SCNetworkAgent injectExecutor:[SCApiExecutorForSCNetworkKit class]];
     }
     
     self.sharedAgent = [SCNetworkAgent new];

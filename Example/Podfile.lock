@@ -1,27 +1,40 @@
 PODS:
-  - SCJSONUtil (2.4.9)
-  - SCNetworkAgent (0.1.4)
-  - SCNetworkKit (1.0.14)
+  - AFNetworking (2.7.0.1):
+    - AFNetworking/NSURLConnection (= 2.7.0.1)
+    - AFNetworking/Security (= 2.7.0.1)
+    - AFNetworking/Serialization (= 2.7.0.1)
+  - AFNetworking/NSURLConnection (2.7.0.1):
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Security (2.7.0.1)
+  - AFNetworking/Serialization (2.7.0.1)
+  - SCJSONUtil (2.5.1)
+  - SCNetworkAgent (0.1.10)
+  - SCNetworkKit (1.0.18)
 
 DEPENDENCIES:
+  - AFNetworking (from `./Vendor/`)
   - SCJSONUtil
   - SCNetworkAgent (from `../`)
   - SCNetworkKit (= 1.0.18)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - SCJSONUtil
     - SCNetworkKit
 
 EXTERNAL SOURCES:
+  AFNetworking:
+    :path: "./Vendor/"
   SCNetworkAgent:
     :path: "../"
 
 SPEC CHECKSUMS:
-  SCJSONUtil: d4a4f399612b97601757328ce4e7c2b34564bad1
-  SCNetworkAgent: 13455c66e8d414e56e2587a5d111cfad1c6ba1b9
-  SCNetworkKit: d887b57ef62b3ddc4a6d082bbf1c585bfb0c5a90
+  AFNetworking: a811c5bb30d03ba220b6531e6b29f4d2f7063a2e
+  SCJSONUtil: 8c91f5b2c890e90966a63b25bb0099e6fecffdc4
+  SCNetworkAgent: 5ec78b361c672ad4c4083584ca93c89c36ce2c7e
+  SCNetworkKit: 82ff066161c6095c16771c7850523bda8e10eaff
 
-PODFILE CHECKSUM: 25c8031909c7f4d260bdd3c02754d2b91b0235f9
+PODFILE CHECKSUM: eb068ce4e6a9614869f18eae8a8990114d8dc477
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.9.1

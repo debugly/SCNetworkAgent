@@ -1,16 +1,33 @@
 //
-//  SCNetworkApiExecutor.m
+//  SCApiExecutorForSCNetworkKit.m
 //  SCNetworkAgent_Example
 //
 //  Created by 许乾隆 on 2019/8/31.
 //  Copyright © 2019 MRFoundation. All rights reserved.
 //
 
-#import "SCNetworkApiExecutor.h"
+#import "SCApiExecutorForSCNetworkKit.h"
 #import <SCNetworkKit/SCNetworkKit.h>
 #import <SCNetworkAgent/SCNetworkBaseApiResponse.h>
+#import "objc/runtime.h"
 
-@implementation SCNetworkApiExecutor
+@implementation SCNetworkAgent (_scn)
+
+static const void *scn_service_addr;
+
+- (SCNetworkService *)scn_service
+{
+    return objc_getAssociatedObject(self, &scn_service_addr);
+}
+
+- (void)setScn_service:(SCNetworkService *)service
+{
+    objc_setAssociatedObject(self, &scn_service_addr, service, OBJC_ASSOCIATION_RETAIN);
+}
+
+@end
+
+@implementation SCApiExecutorForSCNetworkKit
 
 + (BOOL)canProcessApi:(NSObject<SCNetworkBaseApiProtocol> *)api
 {
@@ -37,15 +54,15 @@
 //    }
 }
 
-+ (void)doProcessApi:(NSObject<SCNetworkBaseApiProtocol> *)api
++ (void)doProcessApi:(NSObject<SCNetworkBaseApiProtocol> *)api agent:(SCNetworkAgent *)sender
 {
-    NSLog(@"SCNetworkApiExecutor 处理了请求:%@",api);
+    NSLog(@"SCApiExecutorForSCNetworkKit 处理了请求:%@",api);
     
     SCNetworkRequest *req = nil;
     
     NSDictionary *header = [api header];
     NSDictionary *queryParams = [api queryParameters];
-    NSString *ua  = [api userAgent];
+    NSString *ua = [api userAgent];
     NSString *url = [api urlString];
     SCNetworkHttpMethod httpMethod = [api method];
     
@@ -88,14 +105,16 @@
         NSAssert(httpMethod == SCNetworkHttpMethod_GET, @"download must use Http Get!");
         NSObject <SCNetworkDownloadApiProtocol> *downloadApi = (id)api;
 #warning TODO download use http post!
-        req = [[SCNetworkRequest alloc] initWithURLString:url params:queryParams];
+        SCNetworkDownloadRequest *downloadReq = [[SCNetworkDownloadRequest alloc] initWithURLString:url params:queryParams];
         NSAssert(downloadApi.downloadFilePath.length != 0, @"download must has downloadFilePath!");
-        req.downloadFileTargetPath = downloadApi.downloadFilePath;
-        [req addProgressChangedHandler:^(SCNetworkRequest *request, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected) {
+        downloadReq.downloadFileTargetPath = downloadApi.downloadFilePath;
+        downloadReq.useBreakpointContinuous = downloadApi.useBreakpointContinuous;
+        [downloadReq addProgressChangedHandler:^(SCNetworkRequest *request, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected) {
             if ([downloadApi respondsToSelector:@selector(progressHandler)]) {
                 downloadApi.progressHandler(downloadApi,thisTransfered,totalBytesTransfered,totalBytesExpected);
             }
         }];
+        req = downloadReq;
     } else if ([api conformsToProtocol:@protocol(SCNetworkPostApiProtocol)]) {
         NSAssert(httpMethod == SCNetworkHttpMethod_POST, @"SCNetworkPostApiProtocol must use Http Post!");
         NSObject <SCNetworkPostApiProtocol> *postApi = (id)api;
@@ -178,7 +197,13 @@
     }];
     
     req.responseParser = nil;
-    [[SCNetworkService sharedService] startRequest:req];
+    
+    SCNetworkService *service = [sender scn_service];
+    if (!service) {
+        service = [SCNetworkService new];
+        [sender setScn_service:service];
+    }
+    [service startRequest:req];
 }
 
 @end

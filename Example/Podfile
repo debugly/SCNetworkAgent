@@ -1,3 +1,6 @@
+# source 'https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git'
+source 'https://cdn.cocoapods.org/'
+
 use_frameworks!
 
 platform :ios, '8.0'
@@ -6,4 +9,5 @@ target 'SCNetworkAgent_Example' do
   pod 'SCNetworkAgent', :path => '../'
   pod 'SCNetworkKit','1.0.18'
   pod 'SCJSONUtil'
+  pod 'AFNetworking', :path => './Vendor/'
 end
