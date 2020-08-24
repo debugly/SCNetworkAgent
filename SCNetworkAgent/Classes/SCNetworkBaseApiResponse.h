@@ -33,7 +33,7 @@
 /**
  the http error or parser error
  */
-@property (nonatomic, strong) NSError *err;
+@property (nonatomic, strong) NSError * err;
 /**
  parser result
  */

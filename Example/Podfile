@@ -7,7 +7,7 @@ platform :ios, '8.0'
 
 target 'SCNetworkAgent_Example' do
   pod 'SCNetworkAgent', :path => '../'
-  pod 'SCNetworkKit','1.0.18'
+  pod 'SCNetworkKit','1.0.19'
   pod 'SCJSONUtil'
   pod 'AFNetworking', :path => './Vendor/'
 end

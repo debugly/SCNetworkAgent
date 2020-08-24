@@ -191,9 +191,33 @@
 
 - (void)testDownloadApi {
     SCNetworkDownloadApi *downApi = [SCNetworkDownloadApi new];
-    downApi.method = SCNetworkHttpMethod_GET;
 //    downApi.urlString = [self urlWithPath:@"/images/node.jpg"];
-    downApi.urlString = [self urlWithPath:@"/images/22.mkv"];
+    downApi.urlString = [self urlWithPath:@"/users/download"];
+    downApi.queryParameters = @{@"k1":@"v1",@"k2":@"v2"};
+    
+    NSString * downloadFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[downApi.urlString lastPathComponent]];
+    downApi.downloadFilePath = downloadFilePath;
+    downApi.useBreakpointContinuous = NO;
+    NSLog(@"downloadFilePath:%@",downloadFilePath);
+    downApi.progressHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected){
+        NSLog(@"%lld-%lld-%lld;%0.4f",thisTransfered,totalBytesTransfered,totalBytesExpected,1.0 * totalBytesTransfered/totalBytesExpected);
+    };
+    
+    downApi.responseHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
+        SCNetworkDownloadApi *downloadApi = (SCNetworkDownloadApi *)api;
+        if (!resp.err) {
+            NSLog(@"download file suceed:%@",downloadApi.downloadFilePath);
+        } else {
+            NSAssert(NO,@"download file failed:%@",resp.err);
+        }
+    };
+    [[self sharedAgent] execApi:downApi];
+}
+
+- (void)testPostDownloadApi {
+    SCNetworkDownloadApi *downApi = [SCNetworkDownloadApi new];
+    downApi.method = SCNetworkHttpMethod_POST;
+    downApi.urlString = [self urlWithPath:@"/users/download"];
     downApi.queryParameters = @{@"k1":@"v1",@"k2":@"v2"};
     
     NSString * downloadFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[downApi.urlString lastPathComponent]];
@@ -241,7 +265,7 @@
         //使用Model响应解析器前，必须注入model解析器类！！!
         [SCNetworkModelResponseParser registerModelParser:[SCJson2ModelParser class]];
         //SCNetworkAgent 只是网络请求的协议层，因此需要注入实际的执行者才能发送请求！
-        [SCNetworkAgent injectExecutor:[SCApiExecutorForAFURLConnect class]];
+//        [SCNetworkAgent injectExecutor:[SCApiExecutorForAFURLConnect class]];
         [SCNetworkAgent injectExecutor:[SCApiExecutorForSCNetworkKit class]];
     }
     
@@ -254,6 +278,7 @@
 //    [self testFormDataPostApi];
 //    [self testUploadApi];
 //    [self testDownloadApi];
+    [self testPostDownloadApi];
 //    [self testCancelApi];
 }
 

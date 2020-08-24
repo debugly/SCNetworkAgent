@@ -102,11 +102,13 @@ static const void *scn_service_addr;
             NSLog(@"Warning:upload none file or data!");
         }
     } else if ([api conformsToProtocol:@protocol(SCNetworkDownloadApiProtocol)]) {
-        NSAssert(httpMethod == SCNetworkHttpMethod_GET, @"download must use Http Get!");
         NSObject <SCNetworkDownloadApiProtocol> *downloadApi = (id)api;
-#warning TODO download use http post!
+        
         SCNetworkDownloadRequest *downloadReq = [[SCNetworkDownloadRequest alloc] initWithURLString:url params:queryParams];
+        downloadReq.method = httpMethod == SCNetworkHttpMethod_GET ? SCNetworkRequestGetMethod : SCNetworkRequestPostMethod;
+        
         NSAssert(downloadApi.downloadFilePath.length != 0, @"download must has downloadFilePath!");
+        
         downloadReq.downloadFileTargetPath = downloadApi.downloadFilePath;
         downloadReq.useBreakpointContinuous = downloadApi.useBreakpointContinuous;
         [downloadReq addProgressChangedHandler:^(SCNetworkRequest *request, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected) {

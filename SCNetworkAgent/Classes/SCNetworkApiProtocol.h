@@ -21,12 +21,13 @@ typedef enum : NSUInteger {
     SCNetworkPostEncodingFormData,
 } SCNetworkPostEncoding;
 
-
 @protocol SCNetworkBaseApiProtocol,SCNetworkBaseApiResponseProtocol;
 //响应回调
 typedef void(^SCNetworkApiResponseHandler)(NSObject<SCNetworkBaseApiProtocol> * api,NSObject<SCNetworkBaseApiResponseProtocol>* resp);
 //上传、下载进度回调
 typedef void(^SCNetworkApiProgressHandler)(NSObject<SCNetworkBaseApiProtocol> * api, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected);
+
+#pragma mark - SCNetworkBaseApiResponseProtocol
 
 @protocol SCNetworkBaseApiResponseProtocol <NSObject>
 
@@ -62,6 +63,8 @@ typedef void(^SCNetworkApiProgressHandler)(NSObject<SCNetworkBaseApiProtocol> * 
 
 @end
 
+#pragma mark - SCNetworkBaseApiProtocol
+
 @protocol SCNetworkBaseApiProtocol <NSObject>
 
 @required
@@ -70,7 +73,8 @@ typedef void(^SCNetworkApiProgressHandler)(NSObject<SCNetworkBaseApiProtocol> * 
  */
 - (NSString *)urlString;
 /**
- HTTP 请求方法，目前仅支持GET和POST
+ HTTP 请求方法，目前仅支持GET和POST;
+ POST 请求不支持body体；see SCNetworkPostApiProtocol;
  */
 - (SCNetworkHttpMethod)method;
 /**
@@ -111,6 +115,8 @@ typedef void(^SCNetworkApiProgressHandler)(NSObject<SCNetworkBaseApiProtocol> * 
 
 @end
 
+#pragma mark - SCNetworkPostApiProtocol
+
 @protocol SCNetworkPostApiProtocol <SCNetworkBaseApiProtocol>
 
 @required
@@ -118,12 +124,31 @@ typedef void(^SCNetworkApiProgressHandler)(NSObject<SCNetworkBaseApiProtocol> * 
 - (SCNetworkPostEncoding)parametersEncoding;
 @optional
 /**
- HTTP 请求体参数
+ HTTP 请求体（body）参数
  */
 - (NSDictionary*)bodyParameters;
 
 @end
 
+#pragma mark - SCNetworkUploadApiProtocol
+
+@protocol SCNetworkUploadApiProtocol <SCNetworkPostApiProtocol>
+
+@required
+//必须是: multipart/form-data
+- (SCNetworkPostEncoding)parametersEncoding;
+
+- (NSArray <SCNetworkFormPart *>*)formParts;
+
+@optional
+/**
+ 上传进度回调
+ */
+- (SCNetworkApiProgressHandler)progressHandler;
+
+@end
+
+#pragma mark - SCNetworkDownloadApiProtocol
 
 @protocol SCNetworkDownloadApiProtocol <SCNetworkBaseApiProtocol>
 
@@ -140,20 +165,5 @@ typedef void(^SCNetworkApiProgressHandler)(NSObject<SCNetworkBaseApiProtocol> * 
  下载进度回调
  */
 - (SCNetworkApiProgressHandler)progressHandler;
-@end
 
-
-@protocol SCNetworkUploadApiProtocol <SCNetworkPostApiProtocol>
-
-@required
-//必须是: multipart/form-data
-- (SCNetworkPostEncoding)parametersEncoding;
-
-- (NSArray <SCNetworkFormPart *>*)formParts;
-
-@optional
-/**
- 上传进度回调
- */
-- (SCNetworkApiProgressHandler)progressHandler;
 @end
