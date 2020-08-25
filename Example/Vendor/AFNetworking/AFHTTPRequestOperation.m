@@ -203,13 +203,30 @@ static dispatch_group_t http_request_operation_completion_group() {
     return operation;
 }
 
-- (void)connection:(NSURLConnection __unused *)connection
+- (void)connection:(NSURLConnection *)connection
 didReceiveResponse:(NSURLResponse *)response
 {
     [super connection:connection didReceiveResponse:response];
     if (self.isDownloadReq) {
         NSHTTPURLResponse *httpResp = (NSHTTPURLResponse *)response;
-        if (httpResp.statusCode < 200 || httpResp.statusCode >= 300) {
+        if(httpResp.statusCode == 416) {
+            NSString *range = [[httpResp allHeaderFields] objectForKey:@"Content-Range"];
+            NSArray *items = [range componentsSeparatedByString:@"/"];
+            NSString *maxLengthStr = [items lastObject];
+            if (maxLengthStr) {
+                long maxlenght = (long)[maxLengthStr longLongValue];
+                NSString *reqByteRange =  [self.request valueForHTTPHeaderField:@"Range"];
+                NSString *reqRange = [[reqByteRange componentsSeparatedByString:@"="] lastObject];
+                if (reqRange) {
+                    NSString *beginStr = [[reqRange componentsSeparatedByString:@"-"] firstObject];
+                    long begin = (long)[beginStr longLongValue];
+                    if (maxlenght == begin) {
+                        [connection cancel];
+                        [self connectionDidFinishLoading:connection];
+                    }
+                }
+            }
+        } else if (httpResp.statusCode < 200 || httpResp.statusCode >= 300) {
             [connection cancel];
             NSError *err = [NSError errorWithDomain:NSURLErrorDomain code:httpResp.statusCode userInfo:nil];
             [self connection:connection didFailWithError:err];

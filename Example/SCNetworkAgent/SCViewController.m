@@ -222,7 +222,7 @@
     
     NSString * downloadFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[downApi.urlString lastPathComponent]];
     downApi.downloadFilePath = downloadFilePath;
-    downApi.useBreakpointContinuous = NO;
+    downApi.useBreakpointContinuous = YES;
     NSLog(@"downloadFilePath:%@",downloadFilePath);
     downApi.progressHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected){
         NSLog(@"%lld-%lld-%lld;%0.4f",thisTransfered,totalBytesTransfered,totalBytesExpected,1.0 * totalBytesTransfered/totalBytesExpected);

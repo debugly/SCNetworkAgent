@@ -90,11 +90,9 @@ static const void *af_operation_mag_addr;
             NSLog(@"Warning:upload none file or data!");
         }
     } else if ([api conformsToProtocol:@protocol(SCNetworkDownloadApiProtocol)]) {
-        NSAssert(httpMethod == SCNetworkHttpMethod_GET, @"download must use Http Get!");
         NSObject <SCNetworkDownloadApiProtocol> *downloadApi = (id)api;
         NSAssert(downloadApi.downloadFilePath.length != 0, @"download must has downloadFilePath!");
-#warning TODO download use http post!
-        request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:url parameters:queryParams error:nil];
+        request = [[AFHTTPRequestSerializer serializer] requestWithMethod: httpMethod == SCNetworkHttpMethod_GET ? @"GET" : @"POST" URLString:url parameters:queryParams error:nil];
         
     } else if ([api conformsToProtocol:@protocol(SCNetworkPostApiProtocol)]) {
         NSAssert(httpMethod == SCNetworkHttpMethod_POST, @"SCNetworkPostApiProtocol must use Http Post!");
@@ -203,6 +201,10 @@ static const void *af_operation_mag_addr;
     if ([api conformsToProtocol:@protocol(SCNetworkDownloadApiProtocol)]) {
         NSObject <SCNetworkDownloadApiProtocol> *downloadApi = (id)api;
         operation.isDownloadReq = YES;
+        //避免 416 问题
+        if (!downloadApi.useBreakpointContinuous) {
+            [[NSFileManager defaultManager] removeItemAtPath:downloadApi.downloadFilePath error:nil];
+        }
         operation.outputStream = [NSOutputStream outputStreamToFileAtPath:downloadApi.downloadFilePath append:downloadApi.useBreakpointContinuous];
         NSFileHandle *handler = [NSFileHandle fileHandleForWritingAtPath:downloadApi.downloadFilePath];
         NSString *range = [NSString stringWithFormat:@"bytes=%lld-",[handler seekToEndOfFile]];
