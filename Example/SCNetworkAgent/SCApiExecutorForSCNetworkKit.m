@@ -67,8 +67,6 @@ static const void *scn_service_addr;
     SCNetworkHttpMethod httpMethod = [api method];
     
     if ([api conformsToProtocol:@protocol(SCNetworkUploadApiProtocol)]) {
-        NSLog(@"UploadApi");
-        
         NSAssert(httpMethod == SCNetworkHttpMethod_POST, @"Upload must use Http Post!");
         NSObject <SCNetworkUploadApiProtocol> *uploadApi = (id)api;
         NSDictionary *bodyParameters = [uploadApi bodyParameters];
@@ -77,7 +75,7 @@ static const void *scn_service_addr;
             [postReq addQueryParameters:queryParams];
         }
         [postReq addProgressChangedHandler:^(SCNetworkRequest *request, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected) {
-            if ([uploadApi respondsToSelector:@selector(progressHandler)]) {
+            if ([uploadApi respondsToSelector:@selector(progressHandler)] && uploadApi.progressHandler) {
                 uploadApi.progressHandler(uploadApi,thisTransfered,totalBytesTransfered,totalBytesExpected);
             }
         }];
@@ -112,7 +110,7 @@ static const void *scn_service_addr;
         downloadReq.downloadFileTargetPath = downloadApi.downloadFilePath;
         downloadReq.useBreakpointContinuous = downloadApi.useBreakpointContinuous;
         [downloadReq addProgressChangedHandler:^(SCNetworkRequest *request, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected) {
-            if ([downloadApi respondsToSelector:@selector(progressHandler)]) {
+            if ([downloadApi respondsToSelector:@selector(progressHandler)] && downloadApi.progressHandler) {
                 downloadApi.progressHandler(downloadApi,thisTransfered,totalBytesTransfered,totalBytesExpected);
             }
         }];
@@ -150,7 +148,6 @@ static const void *scn_service_addr;
         }
         req = postReq;
     } else if ([api conformsToProtocol:@protocol(SCNetworkBaseApiProtocol)]) {
-        NSLog(@"BaseApi");
         if (httpMethod == SCNetworkHttpMethod_GET) {
             req = [[SCNetworkRequest alloc] initWithURLString:url params:queryParams];
         } else if (httpMethod == SCNetworkHttpMethod_POST) {
@@ -173,8 +170,9 @@ static const void *scn_service_addr;
     [req addCompletionHandler:^(SCNetworkRequest *request, NSData * result, NSError *err) {
         
         SCNetworkBaseApiResponse *resp = [SCNetworkBaseApiResponse new];
-        resp.statusCode = 200;
+        resp.statusCode = request.response.statusCode;
         resp.expectedContentLength = [result length];
+        resp.allHeaderFields = request.response.allHeaderFields;
         resp.data = result;
 
         if (err) {

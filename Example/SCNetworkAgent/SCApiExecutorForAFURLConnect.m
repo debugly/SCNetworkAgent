@@ -167,6 +167,7 @@ static const void *af_operation_mag_addr;
         SCNetworkBaseApiResponse *resp = [SCNetworkBaseApiResponse new];
         resp.statusCode = operation.response.statusCode;
         resp.expectedContentLength = [responseObject length];
+        resp.allHeaderFields = operation.response.allHeaderFields;
         resp.data = responseObject;
 
         if (api.responseParser) {

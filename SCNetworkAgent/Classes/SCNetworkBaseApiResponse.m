@@ -11,7 +11,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"HTTP %ld, %@:%lld",self.statusCode,self.MIMEType,self.expectedContentLength];
+    return [NSString stringWithFormat:@"HTTP %ld, %@",self.statusCode,self.allHeaderFields];
 }
 
 @end

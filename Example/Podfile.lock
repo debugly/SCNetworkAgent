@@ -10,13 +10,13 @@ PODS:
   - AFNetworking/Serialization (2.7.0.1)
   - SCJSONUtil (2.5.1)
   - SCNetworkAgent (0.1.11)
-  - SCNetworkKit (1.0.19)
+  - SCNetworkKit (1.0.20)
 
 DEPENDENCIES:
   - AFNetworking (from `./Vendor/`)
   - SCJSONUtil
   - SCNetworkAgent (from `../`)
-  - SCNetworkKit (= 1.0.19)
+  - SCNetworkKit (= 1.0.20)
 
 SPEC REPOS:
   trunk:
@@ -33,8 +33,8 @@ SPEC CHECKSUMS:
   AFNetworking: a811c5bb30d03ba220b6531e6b29f4d2f7063a2e
   SCJSONUtil: 8c91f5b2c890e90966a63b25bb0099e6fecffdc4
   SCNetworkAgent: 0b0b6b757b10e3149c59e5683c9134d1e1e30cb3
-  SCNetworkKit: c0e69eafbd291fc546ae9d038da03a69fc7fb76c
+  SCNetworkKit: 52762883198283fee5f923aebc0d05a9ed38ec85
 
-PODFILE CHECKSUM: 381b4f97ea1f70a0714144d7039f1b65d75bc46d
+PODFILE CHECKSUM: a6334a3be3173f154b4a8a592c0cb5ac842baedb
 
 COCOAPODS: 1.9.1
