@@ -2,13 +2,21 @@
 //  SCNetworkBaseApi.h
 //  SCNetworkAgent
 //
-//  Created by 许乾隆 on 2019/8/30.
+//  Created by Matt Reach on 2019/8/30.
 //
+
+// API 基类，实现了 最基本的 GET,POST(不支持body) 请求
+
+// 可设置 Header
+// 支持 block 响应着陆
+// 支持配置响应解析器
+// 支持取消
 
 #import <Foundation/Foundation.h>
 #import "SCNetworkApiProtocol.h"
+#import "SCNetworkResponseParserProtocol.h"
 
-@interface SCNetworkBaseApi : NSObject<SCNetworkBaseApiProtocol>
+@interface SCNetworkBaseApi : NSObject<SCNetworkApiProtocol>
 
 /**
  HTTP 请求地址
@@ -53,7 +61,7 @@
 /**
  注册取消回调，当调用cancel时，该handler回调
  */
-- (void)registerCancelHandler:(void(^)(NSObject <SCNetworkBaseApiProtocol>*api))handler;
+- (void)registerCancelHandler:(void(^)(NSObject <SCNetworkApiProtocol>*api))handler;
 
 
 @end

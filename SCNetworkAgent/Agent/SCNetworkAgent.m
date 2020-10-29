@@ -2,7 +2,7 @@
 //  SCNetworkAgent.m
 //  SCNetworkAgent
 //
-//  Created by 许乾隆 on 2019/8/30.
+//  Created by Matt Reach on 2019/8/30.
 //
 
 #import "SCNetworkAgent.h"
@@ -16,7 +16,7 @@ static NSArray *s_executors;
     return [[self alloc] init];
 }
 
-- (void)execApi:(NSObject<SCNetworkBaseApiProtocol> *)api
+- (void)execApi:(NSObject<SCNetworkApiProtocol> *)api
 {
     NSAssert([s_executors count] > 0, @"you must inject api executor before exec the api:%@",api);
 
@@ -45,6 +45,11 @@ static NSArray *s_executors;
         [arr addObject:executor];
         s_executors = [arr copy];
     }
+}
+
++ (void)clearAllExecutors
+{
+    s_executors = nil;
 }
 
 @end

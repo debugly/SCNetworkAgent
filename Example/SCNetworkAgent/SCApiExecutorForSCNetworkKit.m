@@ -2,14 +2,21 @@
 //  SCApiExecutorForSCNetworkKit.m
 //  SCNetworkAgent_Example
 //
-//  Created by 许乾隆 on 2019/8/31.
+//  Created by Matt Reach on 2019/8/31.
 //  Copyright © 2019 MRFoundation. All rights reserved.
 //
 
 #import "SCApiExecutorForSCNetworkKit.h"
 #import <SCNetworkKit/SCNetworkKit.h>
+
+#import <SCNetworkAgent/SCNetworkApiResponseProtocol.h>
+#import <SCNetworkAgent/SCNetworkPostApiProtocol.h>
+#import <SCNetworkAgent/SCNetworkDownloadApiProtocol.h>
+#import <SCNetworkAgent/SCNetworkUploadApiProtocol.h>
 #import <SCNetworkAgent/SCNetworkBaseApiResponse.h>
+
 #import "objc/runtime.h"
+
 
 @implementation SCNetworkAgent (_scn)
 
@@ -29,7 +36,7 @@ static const void *scn_service_addr;
 
 @implementation SCApiExecutorForSCNetworkKit
 
-+ (BOOL)canProcessApi:(NSObject<SCNetworkBaseApiProtocol> *)api
++ (BOOL)canProcessApi:(NSObject<SCNetworkApiProtocol> *)api
 {
     SCNetworkHttpMethod httpMethod = [api method];
     
@@ -49,12 +56,12 @@ static const void *scn_service_addr;
 //        NSLog(@"PostApi");
 //    } else if ([api conformsToProtocol:@protocol(SCNetworkGetApiProtocol)]) {
 //        NSLog(@"GetApi");
-//    } else if ([api conformsToProtocol:@protocol(SCNetworkBaseApiProtocol)]) {
+//    } else if ([api conformsToProtocol:@protocol(SCNetworkApiProtocol)]) {
 //        NSLog(@"BaseApi");
 //    }
 }
 
-+ (void)doProcessApi:(NSObject<SCNetworkBaseApiProtocol> *)api agent:(SCNetworkAgent *)sender
++ (void)doProcessApi:(NSObject<SCNetworkApiProtocol> *)api agent:(SCNetworkAgent *)sender
 {
     NSLog(@"SCApiExecutorForSCNetworkKit 处理了请求:%@",api);
     
@@ -79,7 +86,7 @@ static const void *scn_service_addr;
                 uploadApi.progressHandler(uploadApi,thisTransfered,totalBytesTransfered,totalBytesExpected);
             }
         }];
-        NSAssert([uploadApi parametersEncoding] == SCNetworkPostEncodingFormData, @"Upload must use FormData Encoding!");
+        NSAssert([uploadApi bodyEncoding] == SCNetworkFormDataEncodingBody, @"Upload must use FormData Encoding!");
         
         if ([[uploadApi formParts] count] > 0) {
             NSMutableArray <SCNetworkFormFilePart *>* formFileParts = [NSMutableArray arrayWithCapacity:2];
@@ -124,30 +131,30 @@ static const void *scn_service_addr;
             [postReq addQueryParameters:queryParams];
         }
 
-        switch ([postApi parametersEncoding]) {
-            case SCNetworkPostEncodingURL:
+        switch ([postApi bodyEncoding]) {
+            case SCNetworkURLEncodingBody:
             {
                 postReq.parameterEncoding = SCNPostDataEncodingURL;
             }
                 break;
-            case SCNetworkPostEncodingJSON:
+            case SCNetworkJSONEncodingBody:
             {
                 postReq.parameterEncoding = SCNPostDataEncodingJSON;
             }
                 break;
-            case SCNetworkPostEncodingPlist:
+            case SCNetworkPlistEncodingBody:
             {
                 postReq.parameterEncoding = SCNPostDataEncodingPlist;
             }
                 break;
-            case SCNetworkPostEncodingFormData:
+            case SCNetworkFormDataEncodingBody:
             {
                 postReq.parameterEncoding = SCNPostDataEncodingFormData;
             }
                 break;
         }
         req = postReq;
-    } else if ([api conformsToProtocol:@protocol(SCNetworkBaseApiProtocol)]) {
+    } else if ([api conformsToProtocol:@protocol(SCNetworkApiProtocol)]) {
         if (httpMethod == SCNetworkHttpMethod_GET) {
             req = [[SCNetworkRequest alloc] initWithURLString:url params:queryParams];
         } else if (httpMethod == SCNetworkHttpMethod_POST) {
@@ -192,7 +199,7 @@ static const void *scn_service_addr;
         }
     }];
     
-    [api registerCancelHandler:^(NSObject<SCNetworkBaseApiProtocol> *api) {
+    [api registerCancelHandler:^(NSObject<SCNetworkApiProtocol> *api) {
         [req cancel];
     }];
     

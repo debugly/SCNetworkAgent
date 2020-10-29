@@ -2,7 +2,7 @@
 //  SCNetworkPostApi.m
 //  SCNetworkAgent
 //
-//  Created by 许乾隆 on 2019/8/31.
+//  Created by Matt Reach on 2019/8/31.
 //
 
 #import "SCNetworkPostApi.h"
@@ -11,7 +11,7 @@
 
 - (void)setMethod:(SCNetworkHttpMethod)method
 {
-    NSAssert(method == SCNetworkHttpMethod_POST, @"UploadApi can't and needn't set other method except post!");
+    NSAssert(method == SCNetworkHttpMethod_POST, @"PostApi can't and needn't set other method except POST!");
 }
 
 - (SCNetworkHttpMethod)method

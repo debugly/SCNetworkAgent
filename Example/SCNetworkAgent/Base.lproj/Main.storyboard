@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="whP-gf-Uak">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="whP-gf-Uak">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,7 +18,113 @@
                     <view key="view" contentMode="scaleToFill" id="TpU-gO-2f1">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Oaa-b7-Qi8">
+                                <rect key="frame" x="16" y="0.0" width="343" height="315"/>
+                                <subviews>
+                                    <button opaque="NO" tag="1000" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FmB-va-24v">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="rgF-8R-uOn"/>
+                                        </constraints>
+                                        <state key="normal" title="Base Get Api"/>
+                                        <connections>
+                                            <action selector="onClicked:" destination="whP-gf-Uak" eventType="touchUpInside" id="OIX-dp-Otb"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1001" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4A8-gu-b7D">
+                                        <rect key="frame" x="0.0" y="35" width="343" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="2Yz-ta-kO5"/>
+                                        </constraints>
+                                        <state key="normal" title="Base Post Api"/>
+                                        <connections>
+                                            <action selector="onClicked:" destination="whP-gf-Uak" eventType="touchUpInside" id="owS-Eu-S0c"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RAw-x5-j2c">
+                                        <rect key="frame" x="0.0" y="70" width="343" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="7oA-ti-ajO"/>
+                                        </constraints>
+                                        <state key="normal" title="Body Get Model Api"/>
+                                        <connections>
+                                            <action selector="onClicked:" destination="whP-gf-Uak" eventType="touchUpInside" id="UAg-Wv-YyJ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1003" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eRI-Zn-4mZ">
+                                        <rect key="frame" x="0.0" y="105" width="343" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="xsV-Bf-fPI"/>
+                                        </constraints>
+                                        <state key="normal" title="Upload File Api"/>
+                                        <connections>
+                                            <action selector="onClicked:" destination="whP-gf-Uak" eventType="touchUpInside" id="Lh5-Zz-29F"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6v5-OJ-VGD">
+                                        <rect key="frame" x="0.0" y="140" width="343" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="tSM-Wb-U2I"/>
+                                        </constraints>
+                                        <state key="normal" title="Download File Api"/>
+                                        <connections>
+                                            <action selector="onClicked:" destination="whP-gf-Uak" eventType="touchUpInside" id="YTA-0x-HqA"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1005" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EFl-aY-oiN">
+                                        <rect key="frame" x="0.0" y="175" width="343" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="ccb-KI-7io"/>
+                                        </constraints>
+                                        <state key="normal" title="Post Download File Api"/>
+                                        <connections>
+                                            <action selector="onClicked:" destination="whP-gf-Uak" eventType="touchUpInside" id="b8w-yo-YUk"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1006" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n51-tH-nul">
+                                        <rect key="frame" x="0.0" y="210" width="343" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="R0o-s8-3AQ"/>
+                                        </constraints>
+                                        <state key="normal" title="Body Post Api"/>
+                                        <connections>
+                                            <action selector="onClicked:" destination="whP-gf-Uak" eventType="touchUpInside" id="FtN-2Y-Okh"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1007" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wEQ-RS-glb">
+                                        <rect key="frame" x="0.0" y="245" width="343" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="nu9-FN-BhQ"/>
+                                        </constraints>
+                                        <state key="normal" title="FormData Post Api"/>
+                                        <connections>
+                                            <action selector="onClicked:" destination="whP-gf-Uak" eventType="touchUpInside" id="ide-qV-Zej"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1008" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oKr-Wn-CkA">
+                                        <rect key="frame" x="0.0" y="280" width="343" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="DZO-nj-il1"/>
+                                        </constraints>
+                                        <state key="normal" title="Cancel an Api"/>
+                                        <connections>
+                                            <action selector="onClicked:" destination="whP-gf-Uak" eventType="touchUpInside" id="t7Z-rS-EHa"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="FmB-va-24v" secondAttribute="trailing" id="Al3-EX-NAc"/>
+                                    <constraint firstItem="FmB-va-24v" firstAttribute="leading" secondItem="Oaa-b7-Qi8" secondAttribute="leading" id="d76-Qf-0Em"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="Oaa-b7-Qi8" secondAttribute="trailing" id="2ef-lA-xUU"/>
+                            <constraint firstItem="Oaa-b7-Qi8" firstAttribute="top" secondItem="uEw-UM-LJ8" secondAttribute="bottom" id="b6Q-J1-YyI"/>
+                            <constraint firstItem="Oaa-b7-Qi8" firstAttribute="leading" secondItem="TpU-gO-2f1" secondAttribute="leadingMargin" id="wkG-1n-SZL"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tc2-Qw-aMS" userLabel="First Responder" sceneMemberID="firstResponder"/>

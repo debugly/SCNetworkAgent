@@ -5,11 +5,20 @@
 [![License](https://img.shields.io/cocoapods/l/SCNetworkAgent.svg?style=flat)](https://cocoapods.org/pods/SCNetworkAgent)
 [![Platform](https://img.shields.io/cocoapods/p/SCNetworkAgent.svg?style=flat)](https://cocoapods.org/pods/SCNetworkAgent)
 
-## Example
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-## Requirements
+SCNetworkAgent module is a cocoa network abstract layer, business module needn't care the owner network implementation.
+
+The owner must implement SCNetworkAgent's methods by registration before business module send request!
+
+```
+├── Agent    网络请求发起类；跟网络实现耦合的类
+├── BaseApi  提供基础网络请求
+├── DownloadApi 文件下载专用类
+├── PostApi     支持带 body 体的请求
+├── ResponseParser 响应解析器，检查响应，解析成 JSON，Model等
+└── UploadApi   文件上传专用类
+```
 
 ## Installation
 

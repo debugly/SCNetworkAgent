@@ -22,7 +22,7 @@ static Class <SCNetworkModelParserProtocol> MParser;
     return MParser;
 }
 
-- (id)parser:(NSObject<SCNetworkBaseApiResponseProtocol> *)resp error:(NSError *__autoreleasing *)errp
+- (id)parser:(NSObject<SCNetworkApiResponseProtocol> *)resp error:(NSError *__autoreleasing *)errp
 {
     NSError *error = nil;
     id json = [super parser:resp error:&error];

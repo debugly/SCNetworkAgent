@@ -7,15 +7,15 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol SCNetworkBaseApiResponseProtocol;
+@protocol SCNetworkApiResponseProtocol;
 @protocol SCNetworkResponseParserProtocol <NSObject>
 
 @required
 
-- (BOOL)validateResponse:(NSObject<SCNetworkBaseApiResponseProtocol>*)response
+- (BOOL)validateResponse:(NSObject<SCNetworkApiResponseProtocol>*)response
                    error:(NSError * __autoreleasing *)error;
 
-- (id)parser:(NSObject<SCNetworkBaseApiResponseProtocol>*)resp
+- (id)parser:(NSObject<SCNetworkApiResponseProtocol>*)resp
        error:(NSError * __autoreleasing *)error;
 
 @end

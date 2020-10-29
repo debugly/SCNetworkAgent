@@ -2,14 +2,14 @@
 //  SCNetworkBaseApi.m
 //  SCNetworkAgent
 //
-//  Created by 许乾隆 on 2019/8/30.
+//  Created by Matt Reach on 2019/8/30.
 //
 
 #import "SCNetworkBaseApi.h"
 
 @interface SCNetworkBaseApi()
 
-@property (nonatomic, copy) void (^cancelHandler)(NSObject<SCNetworkBaseApiProtocol> *);
+@property (nonatomic, copy) void (^cancelHandler)(NSObject<SCNetworkApiProtocol> *);
 
 @end
 
@@ -25,7 +25,7 @@
     }
 }
 
-- (void)registerCancelHandler:(void (^)(NSObject<SCNetworkBaseApiProtocol> *))handler
+- (void)registerCancelHandler:(void (^)(NSObject<SCNetworkApiProtocol> *))handler
 {
     self.cancelHandler = handler;
 }

@@ -2,7 +2,7 @@
 //  SCJson2ModelParser.m
 //  SCNetworkAgent_Example
 //
-//  Created by 许乾隆 on 2019/9/5.
+//  Created by Matt Reach on 2019/9/5.
 //  Copyright © 2019 MRFoundation. All rights reserved.
 //
 

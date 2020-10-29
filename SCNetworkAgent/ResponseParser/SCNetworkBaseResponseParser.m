@@ -7,6 +7,7 @@
 
 #import "SCNetworkBaseResponseParser.h"
 #import "SCNetworkApiProtocol.h"
+#import "SCNetworkApiResponseProtocol.h"
 
 NSString *const SCNResponseParserErrorDomain = @"com.sc.networkagent";
 
@@ -21,7 +22,7 @@ NSString *const SCNResponseParserErrorDomain = @"com.sc.networkagent";
     return self;
 }
 
-- (BOOL)validateResponse:(NSObject<SCNetworkBaseApiResponseProtocol>*)response
+- (BOOL)validateResponse:(NSObject<SCNetworkApiResponseProtocol>*)response
                    error:(NSError * __autoreleasing *)error
 {
     BOOL responseIsValid = YES;
@@ -56,7 +57,7 @@ NSString *const SCNResponseParserErrorDomain = @"com.sc.networkagent";
     return responseIsValid;
 }
 
-- (id)parser:(NSObject<SCNetworkBaseApiResponseProtocol>*)resp error:(NSError *__autoreleasing *)error
+- (id)parser:(NSObject<SCNetworkApiResponseProtocol>*)resp error:(NSError *__autoreleasing *)error
 {
     return resp.data;
 }

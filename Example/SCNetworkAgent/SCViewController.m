@@ -8,7 +8,7 @@
 
 //将 localhost 换成 localhost.charlesproxy.com 可用 charles 代理抓包。
 
-#define USE_CHARLES 0
+#define USE_CHARLES 1
 
 #if USE_CHARLES
     #define HOST @"localhost.charlesproxy.com:3000"
@@ -17,6 +17,7 @@
 #endif
 
 #import "SCViewController.h"
+
 #import <SCNetworkAgent/SCNetworkAgent.h>
 #import <SCNetworkAgent/SCNetworkBaseApi.h>
 #import <SCNetworkAgent/SCNetworkPostApi.h>
@@ -24,6 +25,8 @@
 #import <SCNetworkAgent/SCNetworkUploadApi.h>
 #import <SCNetworkAgent/SCNetworkJsonResponseParser.h>
 #import <SCNetworkAgent/SCNetworkModelResponseParser.h>
+#import <SCNetworkAgent/SCNetworkApiResponseProtocol.h>
+
 #import "SCApiExecutorForSCNetworkKit.h"
 #import "SCApiExecutorForAFURLConnect.h"
 #import "SCJson2ModelParser.h"
@@ -42,7 +45,33 @@
     return [@"http://" stringByAppendingString:[HOST stringByAppendingPathComponent:path]];
 }
 
-- (void)testBaseApiGet {
+- (IBAction)onClicked:(UIButton *)sender
+{
+    NSInteger tag = sender.tag;
+    if (tag == 1000) {
+        [self testBaseApiGet];
+    } else if (tag == 1001) {
+        [self testBaseApiPost];
+    } else if (tag == 1002) {
+        [self testBaseApiGetModel];
+    } else if (tag == 1003) {
+        [self testUploadApi];
+    } else if (tag == 1004) {
+        [self testDownloadApi];
+    } else if (tag == 1005) {
+        [self testPostDownloadApi];
+    } else if (tag == 1006) {
+        [self testPostApi];
+    } else if (tag == 1007) {
+        [self testFormDataPostApi];
+    } else if (tag == 1008) {
+        [self testCancelApi];
+    }
+}
+
+
+- (void)testBaseApiGet
+{
     SCNetworkBaseApi *api = [SCNetworkBaseApi new];
     api.method = SCNetworkHttpMethod_GET;
     api.urlString = [self urlWithPath:@"/json/Video.json"];
@@ -51,7 +80,7 @@
     responseParser.checkKeyPath = @"qq.code";
     responseParser.okValue = @"200";
     api.responseParser = responseParser;
-    api.responseHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
+    api.responseHandler = ^(NSObject<SCNetworkApiProtocol> *api, NSObject<SCNetworkApiResponseProtocol>* resp){
         if (!resp.err) {
             NSLog(@"get api suceed:%@",resp.parserResult);
         } else {
@@ -62,7 +91,8 @@
     [[self sharedAgent] execApi:api];
 }
 
-- (void)testBaseApiGetModel {
+- (void)testBaseApiGetModel
+{
     SCNetworkBaseApi *api = [SCNetworkBaseApi new];
     api.method = SCNetworkHttpMethod_GET;
     api.urlString = [self urlWithPath:@"/json/Video.json"];
@@ -73,7 +103,7 @@
     responseParser.modelName = @"VideoList";
     responseParser.refObj = @{@"qq":@"videos"};
     api.responseParser = responseParser;
-    api.responseHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
+    api.responseHandler = ^(NSObject<SCNetworkApiProtocol> *api, NSObject<SCNetworkApiResponseProtocol>* resp){
         if (!resp.err) {
             NSAssert([resp.parserResult isKindOfClass:[VideoList class]], @"model parser error!");
             NSLog(@"get api suceed:%@",resp.parserResult);
@@ -89,7 +119,8 @@
 /**
  BaseApi 可以发送Post请求，但是不支持body！需要支持可用 SCNetworkPostApi 。
  */
-- (void)testBaseApiPost {
+- (void)testBaseApiPost
+{
     SCNetworkBaseApi *api = [SCNetworkBaseApi new];
     api.method = SCNetworkHttpMethod_POST;
     api.urlString = [self urlWithPath:@"/users"];
@@ -98,7 +129,7 @@
     responseParser.checkKeyPath = @"status";
     responseParser.okValue = @"200";
     api.responseParser = responseParser;
-    api.responseHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
+    api.responseHandler = ^(NSObject<SCNetworkApiProtocol> *api, NSObject<SCNetworkApiResponseProtocol>* resp){
         if (!resp.err) {
             NSLog(@"post api suceed:%@",resp.parserResult);
         } else {
@@ -109,19 +140,20 @@
     [[self sharedAgent] execApi:api];
 }
 
-- (void)testPostApi {
+- (void)testPostApi
+{
     SCNetworkPostApi *postApi = [SCNetworkPostApi new];
     postApi.method = SCNetworkHttpMethod_POST;
     postApi.urlString = [self urlWithPath:@"/users"];
     postApi.queryParameters = @{@"name":@"Matt Reach",@"k1":@"v1",@"k2":@"v2"};
     postApi.bodyParameters = @{@"date":[[NSDate new]description]};
-    postApi.parametersEncoding = SCNetworkPostEncodingURL;
+    postApi.bodyEncoding = SCNetworkURLEncodingBody;
     SCNetworkJsonResponseParser *responseParser = [[SCNetworkJsonResponseParser alloc] init];
     responseParser.checkKeyPath = @"status";
     responseParser.okValue = @"200";
     postApi.responseParser = responseParser;
     
-    postApi.responseHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
+    postApi.responseHandler = ^(NSObject<SCNetworkApiProtocol> *api, NSObject<SCNetworkApiResponseProtocol>* resp){
         if (!resp.err) {
             NSLog(@"post api suceed:%@",resp.parserResult);
         } else {
@@ -131,19 +163,20 @@
     [[self sharedAgent] execApi:postApi];
 }
 
-- (void)testFormDataPostApi {
+- (void)testFormDataPostApi
+{
     SCNetworkPostApi *postApi = [SCNetworkPostApi new];
     postApi.method = SCNetworkHttpMethod_POST;
     postApi.urlString = [self urlWithPath:@"/upload-file"];
     postApi.queryParameters = @{@"name":@"Matt Reach",@"k1":@"v1",@"k2":@"v2"};
     postApi.bodyParameters = @{@"date":[[NSDate new]description]};
-    postApi.parametersEncoding = SCNetworkPostEncodingFormData;
+    postApi.bodyEncoding = SCNetworkFormDataEncodingBody;
     SCNetworkJsonResponseParser *responseParser = [[SCNetworkJsonResponseParser alloc] init];
     responseParser.checkKeyPath = @"status";
     responseParser.okValue = @"200";
     postApi.responseParser = responseParser;
     
-    postApi.responseHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
+    postApi.responseHandler = ^(NSObject<SCNetworkApiProtocol> *api, NSObject<SCNetworkApiResponseProtocol>* resp){
         if (!resp.err) {
             NSLog(@"post api suceed:%@",resp.parserResult);
         } else {
@@ -153,8 +186,8 @@
     [[self sharedAgent] execApi:postApi];
 }
 
-- (void)testUploadApi {
-    
+- (void)testUploadApi
+{
     SCNetworkUploadApi *uploadApi = [SCNetworkUploadApi new];
     uploadApi.urlString = [self urlWithPath:@"/upload-file"];
     uploadApi.queryParameters = @{@"k1":@"v1",@"k2":@"v2"};
@@ -179,7 +212,7 @@
     responseParser.okValue = @"200";
     uploadApi.responseParser = responseParser;
     
-    uploadApi.responseHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
+    uploadApi.responseHandler = ^(NSObject<SCNetworkApiProtocol> *api, NSObject<SCNetworkApiResponseProtocol>* resp){
         if (!resp.err) {
             NSLog(@"upload file suceed:%@",resp.parserResult);
         } else {
@@ -189,21 +222,22 @@
     [[self sharedAgent] execApi:uploadApi];
 }
 
-- (void)testDownloadApi {
+- (void)testDownloadApi
+{
     SCNetworkDownloadApi *downApi = [SCNetworkDownloadApi new];
 //    downApi.urlString = [self urlWithPath:@"/images/node.jpg"];
     downApi.urlString = [self urlWithPath:@"/users/download"];
     downApi.queryParameters = @{@"k1":@"v1",@"k2":@"v2"};
     
-    NSString * downloadFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[downApi.urlString lastPathComponent]];
+    NSString * downloadFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"node.jpg"];
     downApi.downloadFilePath = downloadFilePath;
     downApi.useBreakpointContinuous = NO;
     NSLog(@"downloadFilePath:%@",downloadFilePath);
-    downApi.progressHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected){
+    downApi.progressHandler = ^(NSObject<SCNetworkApiProtocol> *api, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected){
         NSLog(@"%lld-%lld-%lld;%0.4f",thisTransfered,totalBytesTransfered,totalBytesExpected,1.0 * totalBytesTransfered/totalBytesExpected);
     };
     
-    downApi.responseHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
+    downApi.responseHandler = ^(NSObject<SCNetworkApiProtocol> *api, NSObject<SCNetworkApiResponseProtocol>* resp){
         SCNetworkDownloadApi *downloadApi = (SCNetworkDownloadApi *)api;
         if (!resp.err) {
             NSLog(@"download file suceed:%@",downloadApi.downloadFilePath);
@@ -214,21 +248,22 @@
     [[self sharedAgent] execApi:downApi];
 }
 
-- (void)testPostDownloadApi {
+- (void)testPostDownloadApi
+{
     SCNetworkDownloadApi *downApi = [SCNetworkDownloadApi new];
     downApi.method = SCNetworkHttpMethod_POST;
     downApi.urlString = [self urlWithPath:@"/users/download"];
     downApi.queryParameters = @{@"k1":@"v1",@"k2":@"v2"};
     
-    NSString * downloadFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[downApi.urlString lastPathComponent]];
+    NSString * downloadFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"node.jpg"];
     downApi.downloadFilePath = downloadFilePath;
     downApi.useBreakpointContinuous = YES;
     NSLog(@"downloadFilePath:%@",downloadFilePath);
-    downApi.progressHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected){
+    downApi.progressHandler = ^(NSObject<SCNetworkApiProtocol> *api, int64_t thisTransfered, int64_t totalBytesTransfered, int64_t totalBytesExpected){
         NSLog(@"%lld-%lld-%lld;%0.4f",thisTransfered,totalBytesTransfered,totalBytesExpected,1.0 * totalBytesTransfered/totalBytesExpected);
     };
     
-    downApi.responseHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
+    downApi.responseHandler = ^(NSObject<SCNetworkApiProtocol> *api, NSObject<SCNetworkApiResponseProtocol>* resp){
         SCNetworkDownloadApi *downloadApi = (SCNetworkDownloadApi *)api;
         if (!resp.err) {
             NSLog(@"download file suceed:%@",downloadApi.downloadFilePath);
@@ -239,12 +274,13 @@
     [[self sharedAgent] execApi:downApi];
 }
 
-- (void)testCancelApi{
+- (void)testCancelApi
+{
     SCNetworkBaseApi *api = [SCNetworkBaseApi new];
     api.method = SCNetworkHttpMethod_GET;
     api.urlString = @"http://debugly.cn/repository/test.json";
     api.queryParameters = @{@"k1":@"v1",@"k2":@"v2"};
-    api.responseHandler = ^(NSObject<SCNetworkBaseApiProtocol> *api, NSObject<SCNetworkBaseApiResponseProtocol>* resp){
+    api.responseHandler = ^(NSObject<SCNetworkApiProtocol> *api, NSObject<SCNetworkApiResponseProtocol>* resp){
         NSAssert(NO,@"when cancel request not invoke here!");
     };
     
@@ -270,16 +306,6 @@
     }
     
     self.sharedAgent = [SCNetworkAgent new];
-    
-//    [self testBaseApiGet];
-//    [self testBaseApiGetModel];
-//    [self testBaseApiPost];
-//    [self testPostApi];
-//    [self testFormDataPostApi];
-//    [self testUploadApi];
-//    [self testDownloadApi];
-    [self testPostDownloadApi];
-//    [self testCancelApi];
 }
 
 @end

@@ -7,6 +7,7 @@
 
 #import "SCNetworkJsonResponseParser.h"
 #import "SCNetworkApiProtocol.h"
+#import "SCNetworkApiResponseProtocol.h"
 
 NSString *const SCNJsonParserErrorKey_OkValue = @"OkValue";
 NSString *const SCNJsonParserErrorKey_CheckKeyPath = @"CheckKeyPath";
@@ -102,7 +103,7 @@ static inline id SCFindJSONwithKeyPathArr(NSArray *pathArr,NSDictionary *JSON)
 }
 
 
-- (id)parser:(NSObject<SCNetworkBaseApiResponseProtocol> *)resp
+- (id)parser:(NSObject<SCNetworkApiResponseProtocol> *)resp
        error:(NSError * __autoreleasing *)error
 {
     ///检查数据是否为空

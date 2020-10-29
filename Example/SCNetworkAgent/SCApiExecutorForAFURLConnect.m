@@ -8,8 +8,14 @@
 
 #import "SCApiExecutorForAFURLConnect.h"
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
-#import <SCNetworkAgent/SCNetworkBaseApiResponse.h>
 #import <AFNetworking/AFURLRequestSerialization.h>
+
+#import <SCNetworkAgent/SCNetworkApiResponseProtocol.h>
+#import <SCNetworkAgent/SCNetworkPostApiProtocol.h>
+#import <SCNetworkAgent/SCNetworkDownloadApiProtocol.h>
+#import <SCNetworkAgent/SCNetworkUploadApiProtocol.h>
+#import <SCNetworkAgent/SCNetworkBaseApiResponse.h>
+
 #import "objc/runtime.h"
 
 @implementation SCNetworkAgent (_scn)
@@ -30,7 +36,7 @@ static const void *af_operation_mag_addr;
 
 @implementation SCApiExecutorForAFURLConnect
 
-+ (BOOL)canProcessApi:(NSObject<SCNetworkBaseApiProtocol> *)api
++ (BOOL)canProcessApi:(NSObject<SCNetworkApiProtocol> *)api
 {
     SCNetworkHttpMethod httpMethod = [api method];
     
@@ -43,7 +49,7 @@ static const void *af_operation_mag_addr;
     }
 }
 
-+ (void)doProcessApi:(NSObject<SCNetworkBaseApiProtocol> *)api agent:(SCNetworkAgent *)sender
++ (void)doProcessApi:(NSObject<SCNetworkApiProtocol> *)api agent:(SCNetworkAgent *)sender
 {
     NSLog(@"SCApiExecutorForAFURLConnect 处理了请求:%@",api);
     
@@ -62,7 +68,7 @@ static const void *af_operation_mag_addr;
         
         NSObject <SCNetworkUploadApiProtocol> *uploadApi = (id)api;
         
-        NSAssert([uploadApi parametersEncoding] == SCNetworkPostEncodingFormData, @"Upload must use FormData Encoding!");
+        NSAssert([uploadApi bodyEncoding] == SCNetworkFormDataEncodingBody, @"Upload must use FormData Encoding!");
         
         NSDictionary *bodyParameters = [uploadApi bodyParameters];
         NSString *query = AFQueryStringFromParameters(bodyParameters);
@@ -107,23 +113,23 @@ static const void *af_operation_mag_addr;
         }
         
         AFHTTPRequestSerializer *serializer = nil;
-        switch ([postApi parametersEncoding]) {
-            case SCNetworkPostEncodingURL:
+        switch ([postApi bodyEncoding]) {
+            case SCNetworkURLEncodingBody:
             {
                 serializer = [AFHTTPRequestSerializer serializer];
             }
                 break;
-            case SCNetworkPostEncodingJSON:
+            case SCNetworkJSONEncodingBody:
             {
                 serializer = [AFJSONRequestSerializer serializer];
             }
                 break;
-            case SCNetworkPostEncodingPlist:
+            case SCNetworkPlistEncodingBody:
             {
                serializer = [AFPropertyListRequestSerializer serializer];
             }
                 break;
-            case SCNetworkPostEncodingFormData:
+            case SCNetworkFormDataEncodingBody:
             {
                 request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:url parameters:bodyParameters constructingBodyWithBlock:nil error:nil];
             }
@@ -132,7 +138,7 @@ static const void *af_operation_mag_addr;
         if (serializer) {
             request = [serializer requestWithMethod:@"POST" URLString:url parameters:bodyParameters error:nil];
         }
-    } else if ([api conformsToProtocol:@protocol(SCNetworkBaseApiProtocol)]) {
+    } else if ([api conformsToProtocol:@protocol(SCNetworkApiProtocol)]) {
 
         if (httpMethod == SCNetworkHttpMethod_GET) {
             request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:url parameters:queryParams error:nil];
@@ -221,7 +227,7 @@ static const void *af_operation_mag_addr;
     }
     
     __weak AFHTTPRequestOperation *wsOperation = operation;
-    [api registerCancelHandler:^(NSObject<SCNetworkBaseApiProtocol> *api) {
+    [api registerCancelHandler:^(NSObject<SCNetworkApiProtocol> *api) {
         __strong AFHTTPRequestOperation *operation = wsOperation;
         [operation cancel];
     }];
