@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SCNetworkAgent'
-  s.version          = '0.1.11'
+  s.version          = '0.1.12'
   s.summary          = 'A cocoa network abstract layer.'
   s.description      = <<-DESC
   SCNetworkAgent module is a cocoa network abstract layer, business module needn't care the owner network implementation.
@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '7.0'
   s.osx.deployment_target = '10.10'
-  s.source_files = 'SCNetworkAgent/Classes/**/*'  
+  s.source_files = 'SCNetworkAgent/**/*'
   s.frameworks = 'Foundation'
 
 end
