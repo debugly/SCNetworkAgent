@@ -8,6 +8,8 @@
 #import "SCNetworkModelResponseParser.h"
 #import "SCNetworkApiProtocol.h"
 
+NSString *const SCNJsonParserErrorKey_ModelName = @"ModelName";
+
 static Class <SCNetworkModelParserProtocol> MParser;
 
 @implementation SCNetworkModelResponseParser
@@ -33,34 +35,29 @@ static Class <SCNetworkModelParserProtocol> MParser;
         return nil;
     }
     
-    if (!MParser) {
-        NSAssert(NO, @"SCNModelResponseParser:使用前必须注册Model解析器！使用 registerModelParser 方法！");
-    }
-    
-    id result = json;
-    if (result) {
-        if (self.modelName.length > 0) {
-            //解析目标JSON
-            result = [MParser JSON2Model:result modelName:self.modelName refObj:self.refObj];
-        }else{
-            //不需要解析为Model；
-            result = [MParser JSON2StringValueJSON:result];
-            //SCJSON2StringJOSN(result);
+    if (self.modelName.length > 0) {
+        if (!MParser) {
+            NSAssert(NO, @"SCNetworkModelResponseParser:使用前必须注册Model解析器！使用 registerModelParser 方法！");
         }
-    }
-    
-    ///result is nil;
-    if(!result){
-        ///如果传了errp指针地址了
-        if(errp){
-            NSDictionary *info = @{NSLocalizedDescriptionKey:@"can't find target json",
-                                   NSLocalizedFailureReasonErrorKey:[NSString stringWithFormat:@"can't find target json for %@",self.modelName],
-                                   SCNJsonParserErrorKey_RawJSON:json};
-            *errp = [[NSError alloc] initWithDomain:SCNResponseParserErrorDomain code:NSURLErrorCannotParseResponse userInfo:info];
+        //解析目标JSON
+        id model = [MParser JSON2Model:json modelName:self.modelName refObj:self.refObj];
+        
+        //model is nil ?
+        if(!model){
+            //传了errp 指针地址了?
+            if(errp){
+                NSDictionary *info = @{NSLocalizedDescriptionKey:@"can't convert target json to model",
+                                       NSLocalizedFailureReasonErrorKey:@"can't convert target json to model",
+                                       SCNJsonParserErrorKey_RawJSON:json,
+                                       SCNJsonParserErrorKey_ModelName:self.modelName,
+                };
+                *errp = [[NSError alloc] initWithDomain:SCNResponseParserErrorDomain code:NSURLErrorCannotParseResponse userInfo:info];
+            }
         }
+        return model;
+    } else {
+        return json;
     }
-    
-    return result;
 }
 
 @end

@@ -21,7 +21,6 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
-		85A4F9012D9AB8144FD30BBC /* Pods_SCNetworkAgent_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D37E9A644F99E3053B68AD /* Pods_SCNetworkAgent_Tests.framework */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		B45C0793231A0FA300DFF8E5 /* SCApiExecutorForSCNetworkKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B45C0792231A0FA300DFF8E5 /* SCApiExecutorForSCNetworkKit.m */; };
 		B45C07A1231A7EDD00DFF8E5 /* node.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B45C07A0231A7EDD00DFF8E5 /* node.jpg */; };
@@ -66,7 +65,6 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
-		64E02359E82AFA117DDC5D7A /* Pods-SCNetworkAgent_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCNetworkAgent_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SCNetworkAgent_Tests/Pods-SCNetworkAgent_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		67722D885738C471134BFF98 /* Pods-SCNetworkAgent_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCNetworkAgent_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SCNetworkAgent_Example/Pods-SCNetworkAgent_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -74,7 +72,6 @@
 		B45C0792231A0FA300DFF8E5 /* SCApiExecutorForSCNetworkKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCApiExecutorForSCNetworkKit.m; sourceTree = "<group>"; };
 		B45C07A0231A7EDD00DFF8E5 /* node.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = node.jpg; sourceTree = "<group>"; };
 		B45C07A2231A7F8400DFF8E5 /* note.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = note.txt; sourceTree = "<group>"; };
-		C9D37E9A644F99E3053B68AD /* Pods_SCNetworkAgent_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SCNetworkAgent_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD71C3F324EA2BFD00C77583 /* SCApiExecutorForAFURLConnect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCApiExecutorForAFURLConnect.h; sourceTree = "<group>"; };
 		DD71C3F424EA2BFD00C77583 /* SCApiExecutorForAFURLConnect.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCApiExecutorForAFURLConnect.m; sourceTree = "<group>"; };
 		DDC8990A2320AF27000EB3DB /* SCJson2ModelParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCJson2ModelParser.m; sourceTree = "<group>"; };
@@ -82,7 +79,6 @@
 		DDC8990D2320B04E000EB3DB /* VideoList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoList.h; sourceTree = "<group>"; };
 		DDC8990E2320B04E000EB3DB /* VideoList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoList.m; sourceTree = "<group>"; };
 		EA447F4749A806F96ED6B2C4 /* Pods-SCNetworkAgent_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCNetworkAgent_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-SCNetworkAgent_Example/Pods-SCNetworkAgent_Example.release.xcconfig"; sourceTree = "<group>"; };
-		EF789341DB54B410213704B3 /* Pods-SCNetworkAgent_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SCNetworkAgent_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SCNetworkAgent_Tests/Pods-SCNetworkAgent_Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +100,6 @@
 				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				85A4F9012D9AB8144FD30BBC /* Pods_SCNetworkAgent_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +135,6 @@
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
 				185A7100ED73FDBF19B38FD2 /* Pods_SCNetworkAgent_Example.framework */,
-				C9D37E9A644F99E3053B68AD /* Pods_SCNetworkAgent_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -216,8 +210,6 @@
 			children = (
 				67722D885738C471134BFF98 /* Pods-SCNetworkAgent_Example.debug.xcconfig */,
 				EA447F4749A806F96ED6B2C4 /* Pods-SCNetworkAgent_Example.release.xcconfig */,
-				64E02359E82AFA117DDC5D7A /* Pods-SCNetworkAgent_Tests.debug.xcconfig */,
-				EF789341DB54B410213704B3 /* Pods-SCNetworkAgent_Tests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -248,11 +240,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "SCNetworkAgent_Tests" */;
 			buildPhases = (
-				F233D972A579328DC67CF414 /* [CP] Check Pods Manifest.lock */,
 				6003F5AA195388D20070C39A /* Sources */,
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
-				5732A975F7326478CB93B31C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -323,30 +313,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5732A975F7326478CB93B31C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SCNetworkAgent_Tests/Pods-SCNetworkAgent_Tests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/SCJSONUtil/SCJSONUtil.framework",
-				"${BUILT_PRODUCTS_DIR}/SCNetworkAgent/SCNetworkAgent.framework",
-				"${BUILT_PRODUCTS_DIR}/SCNetworkKit/SCNetworkKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCJSONUtil.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCNetworkAgent.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCNetworkKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SCNetworkAgent_Tests/Pods-SCNetworkAgent_Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		8F4144F3C7EF2692D151B353 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -383,28 +349,6 @@
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-SCNetworkAgent_Example-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F233D972A579328DC67CF414 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SCNetworkAgent_Tests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -609,7 +553,6 @@
 		};
 		6003F5C3195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64E02359E82AFA117DDC5D7A /* Pods-SCNetworkAgent_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -634,7 +577,6 @@
 		};
 		6003F5C4195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EF789341DB54B410213704B3 /* Pods-SCNetworkAgent_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
