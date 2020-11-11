@@ -36,14 +36,16 @@ FOUNDATION_EXPORT NSString *const SCNJsonParserErrorKey_OkValue;
 FOUNDATION_EXPORT NSString *const SCNJsonParserErrorKey_CheckKeyPath;
 FOUNDATION_EXPORT NSString *const SCNJsonParserErrorKey_RealValue;
 FOUNDATION_EXPORT NSString *const SCNJsonParserErrorKey_RawJSON;
+FOUNDATION_EXPORT NSString *const SCNJsonParserErrorKey_ErrMsgValue;
 
 @interface SCNetworkJsonResponseParser : SCNetworkBaseResponseParser
 
 ///default is YES
 @property (nonatomic, assign) BOOL autoRemovesNullValues;
-
 @property (nonatomic, copy) NSString *checkKeyPath;
 @property (nonatomic, copy) NSString *okValue;
 @property (nonatomic, copy) NSString *targetKeyPath;
+///当checkKeyPath的值不等于okValue时，取errMsgKeyPath值；
+@property (nonatomic, copy) NSString *errMsgKeyPath;
 
 @end

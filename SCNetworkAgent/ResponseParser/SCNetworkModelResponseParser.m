@@ -26,22 +26,17 @@ static Class <SCNetworkModelParserProtocol> MParser;
 
 - (id)parser:(NSObject<SCNetworkApiResponseProtocol> *)resp error:(NSError *__autoreleasing *)errp
 {
-    NSError *error = nil;
-    id json = [super parser:resp error:&error];
-    if (error) {
-        if (errp) {
-            *errp = error;
-        }
+    id json = [super parser:resp error:errp];
+    if (!json) {
         return nil;
     }
     
     if (self.modelName.length > 0) {
         if (!MParser) {
-            NSAssert(NO, @"SCNetworkModelResponseParser:使用前必须注册Model解析器！使用 registerModelParser 方法！");
+            NSAssert(NO, @"must call +[SCNetworkModelResponseParser registerModelParser:] befor use.");
         }
         //解析目标JSON
         id model = [MParser JSON2Model:json modelName:self.modelName refObj:self.refObj];
-        
         //model is nil ?
         if(!model){
             //传了errp 指针地址了?
@@ -49,8 +44,7 @@ static Class <SCNetworkModelParserProtocol> MParser;
                 NSDictionary *info = @{NSLocalizedDescriptionKey:@"can't convert target json to model",
                                        NSLocalizedFailureReasonErrorKey:@"can't convert target json to model",
                                        SCNJsonParserErrorKey_RawJSON:json,
-                                       SCNJsonParserErrorKey_ModelName:self.modelName,
-                };
+                                       SCNJsonParserErrorKey_ModelName:self.modelName};
                 *errp = [[NSError alloc] initWithDomain:SCNResponseParserErrorDomain code:NSURLErrorCannotParseResponse userInfo:info];
             }
         }

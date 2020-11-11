@@ -9,7 +9,7 @@
 #import "SCNetworkApiProtocol.h"
 #import "SCNetworkApiResponseProtocol.h"
 
-NSString *const SCNResponseParserErrorDomain = @"com.sc.networkagent";
+NSString *const SCNResponseParserErrorDomain = @"com.debugly.networkagent";
 
 @implementation SCNetworkBaseResponseParser
 
