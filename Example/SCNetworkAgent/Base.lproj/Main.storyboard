@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Oaa-b7-Qi8">
-                                <rect key="frame" x="16" y="0.0" width="343" height="315"/>
+                                <rect key="frame" x="16" y="0.0" width="343" height="350"/>
                                 <subviews>
                                     <button opaque="NO" tag="1000" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FmB-va-24v">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="35"/>
@@ -110,6 +110,16 @@
                                         <state key="normal" title="Cancel an Api"/>
                                         <connections>
                                             <action selector="onClicked:" destination="whP-gf-Uak" eventType="touchUpInside" id="t7Z-rS-EHa"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1009" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OPS-7F-cbK">
+                                        <rect key="frame" x="0.0" y="315" width="343" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="25T-Or-GNF"/>
+                                        </constraints>
+                                        <state key="normal" title="Timeout an Api"/>
+                                        <connections>
+                                            <action selector="onClicked:" destination="whP-gf-Uak" eventType="touchUpInside" id="0g3-z0-A5U"/>
                                         </connections>
                                     </button>
                                 </subviews>

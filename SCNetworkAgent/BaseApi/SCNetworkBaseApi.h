@@ -63,5 +63,9 @@
  */
 - (void)registerCancelHandler:(void(^)(NSObject <SCNetworkApiProtocol>*api))handler;
 
+/**
+ HTTP 超时时间
+ */
+@property (nonatomic, assign) int timeout;
 
 @end

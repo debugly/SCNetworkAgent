@@ -68,4 +68,9 @@ typedef void(^SCNetworkApiResponseHandler)(NSObject<SCNetworkApiProtocol> * api,
  */
 - (NSObject<SCNetworkResponseParserProtocol> *)responseParser;
 
+/**
+ HTTP 超时时间
+ */
+- (int)timeout;
+
 @end

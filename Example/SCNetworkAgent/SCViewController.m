@@ -66,6 +66,8 @@
         [self testFormDataPostApi];
     } else if (tag == 1008) {
         [self testCancelApi];
+    } else if (tag == 1009) {
+        [self testTimeoutApi];
     }
 }
 
@@ -289,6 +291,20 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [api cancel];
     });
+}
+
+- (void)testTimeoutApi
+{
+    SCNetworkBaseApi *api = [SCNetworkBaseApi new];
+    api.method = SCNetworkHttpMethod_GET;
+    api.urlString = @"http://192.168.100.100/repository/test.json";
+    api.queryParameters = @{@"k1":@"v1",@"k2":@"v2"};
+    api.responseHandler = ^(NSObject<SCNetworkApiProtocol> *api, NSObject<SCNetworkApiResponseProtocol>* resp){
+        NSLog(@"request timeout:%@",resp.err);
+    };
+    api.timeout = 1;
+    
+    [[self sharedAgent] execApi:api];
 }
 
 - (void)viewDidLoad

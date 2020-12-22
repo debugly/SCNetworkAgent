@@ -173,7 +173,7 @@ static const void *scn_service_addr;
     if (ua.length > 0) {
         [req addHeaders:@{@"User-Agent":ua}];
     }
-    
+    req.timeoutInterval = api.timeout;
     [req addCompletionHandler:^(SCNetworkRequest *request, NSData * result, NSError *err) {
         
         SCNetworkBaseApiResponse *resp = [SCNetworkBaseApiResponse new];
