@@ -18,7 +18,7 @@
 
 #import "objc/runtime.h"
 
-@implementation SCNetworkAgent (_scn)
+@implementation SCNetworkAgent (_afn)
 
 static const void *af_operation_mag_addr;
 
@@ -51,7 +51,7 @@ static const void *af_operation_mag_addr;
 
 + (void)doProcessApi:(NSObject<SCNetworkApiProtocol> *)api agent:(SCNetworkAgent *)sender
 {
-    NSLog(@"SCApiExecutorForAFURLConnect 处理了请求:%@",api);
+    //NSLog(@"SCApiExecutorForAFURLConnect 处理了请求:%@",api);
     
     NSDictionary *header = [api header];
     NSDictionary *queryParams = [api queryParameters];
@@ -62,16 +62,13 @@ static const void *af_operation_mag_addr;
     NSMutableURLRequest *request = nil;
     
     if ([api conformsToProtocol:@protocol(SCNetworkUploadApiProtocol)]) {
-        NSLog(@"UploadApi");
         
         NSAssert(httpMethod == SCNetworkHttpMethod_POST, @"Upload must use Http Post!");
         
         NSObject <SCNetworkUploadApiProtocol> *uploadApi = (id)api;
         
         NSAssert([uploadApi bodyEncoding] == SCNetworkFormDataEncodingBody, @"Upload must use FormData Encoding!");
-        
-        NSDictionary *bodyParameters = [uploadApi bodyParameters];
-        NSString *query = AFQueryStringFromParameters(bodyParameters);
+        NSString *query = AFQueryStringFromParameters(queryParams);
         if ([url containsString:@"?"]) {
             url = [url stringByAppendingFormat:@"&%@",query];
         } else {
@@ -79,7 +76,7 @@ static const void *af_operation_mag_addr;
         }
         
         if ([[uploadApi formParts] count] > 0) {
-            request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:url parameters:bodyParameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+            request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:url parameters:[uploadApi bodyParameters] constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                 for (SCNetworkFormPart *part in [uploadApi formParts]) {
                     if (part.data) {
                         if (part.fileName && part.mime) {
@@ -161,7 +158,9 @@ static const void *af_operation_mag_addr;
     
     [request setAllHTTPHeaderFields:header];
     [request setValue:ua forHTTPHeaderField:@"User-Agent"];
-    
+    if (api.timeout > 0) {
+        [request setTimeoutInterval:api.timeout];
+    }
     AFHTTPRequestOperationManager * manager = [sender afOperationManager];
     if (!manager) {
         manager = [AFHTTPRequestOperationManager manager];
@@ -223,7 +222,6 @@ static const void *af_operation_mag_addr;
                 downloadApi.progressHandler(downloadApi,bytesRead,totalBytesRead,totalBytesExpectedToRead);
             }
         }];
-        
     }
     
     __weak AFHTTPRequestOperation *wsOperation = operation;
